@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="images/icon.png">
+<meta name="description" content="Zihling（子玲）插畫作品、創作經歷與購買資訊。Specimen of a Maiden｜Zihling">
+<title>Specimen of a Maiden｜Zihling</title>
+<style>
+  :root { --bg:#c9bebe; --ink:#231f20; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { background:var(--bg); color:var(--ink); }
+  body {
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei","Heiti TC",sans-serif;
+    min-height:100vh;
+  }
+  .page {
+    display:grid;
+    grid-template-columns:minmax(220px,300px) auto minmax(300px,560px);
+    gap:clamp(24px,4vw,64px);
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    --pad:clamp(20px,3vw,48px);
+    padding:var(--pad);
+  }
+  /* 電影感暈影：四角漸暗，固定在畫面上，不擋點擊 */
+  body::after {
+    content:''; position:fixed; inset:0; z-index:50; pointer-events:none;
+    background:
+      radial-gradient(ellipse farthest-corner at 50% 46%, transparent 48%, rgba(52,36,34,.28) 72%, rgba(30,20,19,.62) 100%);
+  }
+  @media (max-width: 1000px) {
+    body::after { background:radial-gradient(ellipse farthest-corner at 50% 50%, transparent 52%, rgba(52,36,34,.26) 76%, rgba(30,20,19,.56) 100%); }
+  }
+  /* 左側 */
+  .side { align-self:start; padding-top:clamp(8px,3vh,40px); }
+  .crest { position:relative; display:block; width:58%; max-width:170px; margin:0 auto 2px; filter:drop-shadow(0 3px 6px rgba(60,40,40,.15)); }
+  .crest img { display:block; width:100%; height:auto; }
+  /* 娃娃微微漂浮：上下飄＋輕輕擺動 */
+  .crest { animation:doll-float 6s ease-in-out infinite; transform-origin:50% 40%; }
+  @keyframes doll-float {
+    0%   { transform:translateY(0)    rotate(-1.5deg); }
+    25%  { transform:translateY(-5px) rotate(0.5deg); }
+    50%  { transform:translateY(-8px) rotate(2deg); }
+    75%  { transform:translateY(-3px) rotate(0deg); }
+    100% { transform:translateY(0)    rotate(-1.5deg); }
+  }
+  @media (prefers-reduced-motion: reduce) { .crest { animation:none; } }
+  .crest img.lid { position:absolute; left:19.8165%; top:21.3628%; width:17.6147%; height:12.1547%; opacity:0; }
+  /* 最上面草莓眨眼：睜→半閉→閉→半閉→睜，5.5 秒一輪，偶爾連眨兩下 */
+  .crest img.half { animation:crest-half 5.5s .4s infinite step-end; }
+  .crest img.shut { animation:crest-shut 5.5s .4s infinite step-end; }
+  @keyframes crest-half {
+    0% { opacity:0; }
+    40% { opacity:1; } 41.2% { opacity:0; } 42.4% { opacity:1; } 43.6% { opacity:0; }
+    78% { opacity:1; } 79% { opacity:0; } 80% { opacity:1; } 81% { opacity:0; }
+    83% { opacity:1; } 84% { opacity:0; } 85% { opacity:1; } 86% { opacity:0; }
+  }
+  @keyframes crest-shut {
+    0% { opacity:0; }
+    40.8% { opacity:1; } 42% { opacity:0; }
+    78.6% { opacity:1; } 79.6% { opacity:0; }
+    83.6% { opacity:1; } 84.6% { opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .crest img.lid { animation:none; } }
+  .burger { display:none; }
+  .home-link { cursor:pointer; }
+  .home-link:focus-visible { outline:2px solid var(--ink); outline-offset:4px; border-radius:8px; }
+  .logo { display:block; width:100%; max-width:300px; height:auto; }
+  .menu {
+    margin:clamp(20px,4vh,36px) auto 0;
+    border:1.5px solid var(--ink); border-radius:16px;
+    background:#b3a59c;
+    width:fit-content; min-width:150px; max-width:100%;
+    padding:clamp(18px,3vh,32px) 54px;
+    display:flex; flex-direction:column; align-items:center; gap:clamp(12px,2.6vh,32px);
+  }
+  .menu a {
+    color:var(--ink); text-decoration:none;
+    font-size:clamp(14px,0.95vw,15px); letter-spacing:.04em;
+    transition:opacity .2s, transform .2s;
+  }
+  .menu a {
+    display:block; width:fit-content; text-align:center; padding:6px 14px; margin:0; border-radius:999px;
+    transition:background .25s, color .25s, opacity .2s, transform .2s;
+  }
+  .menu a:hover { opacity:.6; transform:translateX(4px); }
+  .menu a { position:relative; }
+  .menu a::before, .menu a::after {
+    content:''; position:absolute; top:50%;
+    width:32px; height:42px;
+    background:url(images/icon_sprite.png) 0 0 / 300% 100% no-repeat;
+    opacity:0; transition:opacity .25s, transform .35s cubic-bezier(.3,1.6,.5,1);
+    pointer-events:none;
+  }
+  .menu a::before { right:100%; margin-right:6px; transform:translateY(calc(-50% - 3px)) scale(.6) rotate(-12deg); }
+  .menu a::after  { left:100%;  margin-left:6px;  transform:translateY(calc(-50% - 3px)) scale(-.6,.6) rotate(12deg); }
+  .menu a[aria-current="page"]::before { opacity:1; transform:translateY(calc(-50% - 3px)) scale(1) rotate(0); }
+  .menu a[aria-current="page"]::after  { opacity:1; transform:translateY(calc(-50% - 3px)) scale(-1,1) rotate(0); }
+  /* 草莓眼眨眼：7 秒一輪，眨一次＋連眨兩下（左右兩顆同步） */
+  .menu a[aria-current="page"]::before, .menu a[aria-current="page"]::after { animation:berry-blink 7s 1.2s infinite step-end; }
+  /* 三格合成一張圖（睜／半閉／閉），只移動位置，不換圖片，手機不會閃 */
+  @keyframes berry-blink {
+    0%, 33.2%, 87.2%, 92.2% { background-position:0% 0; }
+    30.8%, 32.4%, 84.8%, 86.4%, 89.8%, 91.4% { background-position:50% 0; }
+    31.6%, 85.6%, 90.6% { background-position:100% 0; }
+    100% { background-position:0% 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .menu a[aria-current="page"]::before, .menu a[aria-current="page"]::after { animation:none; } }
+  .menu a[hidden] { display:none; }
+  .menu a[aria-current="page"] { background:var(--ink); color:var(--bg); opacity:1; transform:none; cursor:default; }
+  .menu a:focus-visible { outline:2px solid var(--ink); outline-offset:2px; }
+  .icons { display:flex; justify-content:center; gap:10px; margin:22px auto 0; }
+  .icons .sns { display:block; width:30px; height:30px; border-radius:50%; transition:transform .2s, opacity .2s; }
+  .icons .sns img { display:block; width:100%; height:100%; }
+  .icons .sns:hover { transform:translateY(-2px); opacity:.75; }
+  .icons .sns:focus-visible { outline:2px solid var(--ink); outline-offset:2px; }
+  .lang { display:flex; justify-content:center; align-items:center; gap:8px; margin-top:8px; }
+  .lang button {
+    width:34px; height:34px; border-radius:50%; padding:0;
+    display:inline-grid; place-items:center;
+    font:600 11px/1 "Helvetica Neue",Arial,sans-serif; letter-spacing:.04em;
+    color:#6e6260; background:transparent; border:1.2px solid #8f827e; cursor:pointer;
+    transition:background .25s, color .25s, transform .15s;
+  }
+  .lang button:hover { background:rgba(143,130,126,.15); }
+  .lang button:active { transform:scale(.92); }
+  .lang button[aria-pressed="true"] { background:#8f827e; border-color:#8f827e; color:#f3eeec; }
+  .lang button:focus-visible { outline:2px solid var(--ink); outline-offset:2px; }
+  :lang(ja) body, html:lang(ja) body { font-family:"Noto Sans JP","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",sans-serif; }
+  html:lang(en) .about p { text-align:left; line-height:1.8; }
+  html:lang(en) .menu a { letter-spacing:.01em; }
+
+  /* ===== 創作經歷頁 ===== */
+  body[data-view="career"] .page { grid-template-columns:minmax(220px,300px) minmax(0,1fr); align-items:start; }
+  .career { max-width:780px; }
+  body[data-view="career"] .art, body[data-view="career"] .about { display:none; }
+  .career { padding-top:clamp(24px,5vh,60px); padding-bottom:40px; }
+  .career-title { font-size:clamp(20px,1.6vw,24px); font-weight:600; letter-spacing:.08em; margin-bottom:14px; }
+  .career-filter { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:clamp(20px,3vh,32px); }
+  .career-filter button {
+    font:inherit; font-size:13px; color:#6e6260; background:transparent; border:1.2px solid #8f827e;
+    border-radius:999px; padding:5px 14px; min-height:32px; cursor:pointer; transition:background .2s, color .2s;
+  }
+  .career-filter button:hover { background:rgba(143,130,126,.15); }
+  .career-filter button[aria-pressed="true"] { background:#8f827e; color:#f3eeec; border-color:#8f827e; }
+  .career-filter button:focus-visible { outline:2px solid var(--ink); outline-offset:2px; }
+  .career-year { display:grid; grid-template-columns:72px minmax(0,1fr); gap:20px; padding:16px 0; border-top:1px solid rgba(35,31,32,.18); }
+  .career-year:first-child { border-top:0; }
+  .career-year[hidden] { display:none; }
+  .career-year h3 { font:600 22px/1.2 "Cormorant Garamond","Times New Roman",serif; letter-spacing:.02em; padding-top:2px; }
+  .career-year ul { list-style:none; display:flex; flex-direction:column; gap:9px; }
+  .career-year li { display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:baseline; font-size:clamp(13px,1vw,15px); line-height:1.6; }
+  .career-year li[hidden] { display:none; }
+  .career-year .tag { font-size:11.5px; line-height:1; padding:4px 8px; border-radius:999px; background:rgba(143,130,126,.25); color:#4e4342; white-space:nowrap; min-width:62px; text-align:center; }
+  .career-link { color:var(--ink); text-decoration:none; transition:opacity .2s; }
+  .career-link:hover { opacity:.6; }
+  .career-link::after { content:''; display:inline-block; width:.7em; height:.7em; margin-left:.3em; vertical-align:.02em; background:currentColor;
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='black' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9 9 3M4.5 3H9v4.5'/%3E%3C/svg%3E") center/contain no-repeat; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='black' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9 9 3M4.5 3H9v4.5'/%3E%3C/svg%3E") center/contain no-repeat; }
+  .career-year li[data-g="show"] .tag { background:#8f827e; color:#f3eeec; }
+  /* ===== 聯絡我頁 ===== */
+  body[data-view="contact"] .page { grid-template-columns:minmax(220px,300px) minmax(0,1fr); align-items:start; }
+  body[data-view="contact"] .art, body[data-view="contact"] .about { display:none; }
+  .contact { max-width:620px; padding-top:clamp(24px,5vh,60px); padding-bottom:40px; }
+  .contact-lead { font-size:clamp(13px,1vw,15px); line-height:1.8; margin-bottom:22px; }
+  .contact-form { display:flex; flex-direction:column; gap:16px; }
+  .contact-form .row2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .contact-form label { display:flex; flex-direction:column; gap:6px; font-size:13px; letter-spacing:.04em; }
+  .contact-form input, .contact-form textarea {
+    font:inherit; font-size:16px; color:var(--ink); background:rgba(243,238,236,.55);
+    border:1.2px solid #8f827e; border-radius:12px; padding:10px 12px; resize:vertical; transition:border-color .2s, background .2s;
+  }
+  .contact-form input:focus, .contact-form textarea:focus { outline:none; border-color:var(--ink); background:rgba(243,238,236,.8); }
+  .contact-form [aria-invalid="true"] { border-color:#a3473f; }
+  .ct-send { align-self:flex-start; font:inherit; font-size:15px; letter-spacing:.1em; color:#f3eeec; background:var(--ink);
+    border:0; border-radius:999px; padding:11px 34px; min-height:44px; cursor:pointer; transition:opacity .2s, transform .15s; }
+  .ct-send:hover { opacity:.85; } .ct-send:active { transform:scale(.97); }
+  .ct-send:disabled { opacity:.6; cursor:wait; }
+  .ct-send:focus-visible { outline:2px solid var(--ink); outline-offset:3px; }
+  .ct-error { color:#a3473f; font-size:13px; }
+  .ct-done { font-size:13px; line-height:1.7; }
+  .contact-direct { margin-top:28px; font-size:13px; line-height:2; }
+  .contact-direct a { color:var(--ink); }
+  /* ===== 購買作品頁 ===== */
+  body[data-view="shop"] .page { grid-template-columns:minmax(220px,300px) auto; }
+  @media (min-width:1001px) {
+    body[data-view="shop"] .page { align-items:start; column-gap:clamp(24px,2.6vw,40px); }  /* 螢幕夠大時剛好一頁不需捲動，太小時才可捲動 */
+  }
+  body[data-view="shop"] .art, body[data-view="shop"] .about { display:none; }
+  .shop { align-self:stretch; padding-top:clamp(24px,5vh,60px); }
+  /* 眨眼草莓（左右反轉，睜→半閉→閉→半閉→睜） */
+  .berry { position:relative; transform:scaleX(-1); filter:drop-shadow(0 4px 8px rgba(60,40,40,.18)); }
+  .berry img { display:block; width:100%; height:auto; }
+  .berry img.lid { position:absolute; left:39.1253%; top:25.7796%; width:33.2151%; height:51.3514%; opacity:0; }
+  .berry img.half { animation:crest-half 5.5s 2.2s infinite step-end; }
+  .berry img.shut { animation:crest-shut 5.5s 2.2s infinite step-end; }
+  @keyframes crest-half {
+    0% { opacity:0; }
+    40% { opacity:1; } 41.2% { opacity:0; } 42.4% { opacity:1; } 43.6% { opacity:0; }
+    78% { opacity:1; } 79% { opacity:0; } 80% { opacity:1; } 81% { opacity:0; }
+    83% { opacity:1; } 84% { opacity:0; } 85% { opacity:1; } 86% { opacity:0; }
+  }
+  @keyframes crest-shut {
+    0% { opacity:0; }
+    40.8% { opacity:1; } 42% { opacity:0; }
+    78.6% { opacity:1; } 79.6% { opacity:0; }
+    83.6% { opacity:1; } 84.6% { opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .berry img.lid { animation:none; } }
+  .berry.shop-berry { width:min(100%,220px); margin:4px 0 0 0; }
+  .shop-panel {
+    display:grid; grid-template-columns:auto minmax(220px,290px); gap:clamp(20px,2vw,30px);
+    padding:clamp(8px,1.5vw,24px) 0; align-items:start;
+  }
+  /* 照片固定 205px，不隨螢幕縮放 */
+  .shop { --tile:205px; }
+  .shop-grid { list-style:none; display:grid; grid-template-columns:repeat(3,var(--tile)); gap:18px; }
+  .shop-grid li { aspect-ratio:1; overflow:hidden; border-radius:14px; background:#b9aca9; box-shadow:0 2px 6px rgba(40,28,26,.18); }
+  .shop-grid img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease; }
+  .shop-grid li:hover img { transform:scale(1.05); }
+  .shop-grid img { cursor:zoom-in; }
+  .shop-grid img:focus-visible { outline:2px solid var(--ink); outline-offset:3px; }
+  /* 點開放大 */
+  .lightbox { position:fixed; inset:0; z-index:100; display:grid; place-items:center;
+    background:rgba(28,20,19,.82); backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
+    animation:lb-in .25s ease; }
+  .lightbox[hidden] { display:none; }
+  @keyframes lb-in { from { opacity:0; } }
+  .lightbox figure { margin:0; max-width:min(92vw,1100px); text-align:center; }
+  .lightbox img { max-width:100%; max-height:84vh; border-radius:14px; box-shadow:0 10px 40px rgba(0,0,0,.45); display:block; margin:0 auto; animation:lb-zoom .3s ease; }
+  @keyframes lb-zoom { from { transform:scale(.94); opacity:.4; } }
+  .lightbox figcaption { color:#efe7e4; font-size:14px; margin-top:12px; letter-spacing:.05em; }
+  .lb-btn { position:fixed; width:48px; height:48px; border-radius:50%; border:1.2px solid rgba(239,231,228,.6);
+    background:rgba(28,20,19,.35); color:#efe7e4; font-size:28px; line-height:1; cursor:pointer; display:grid; place-items:center; transition:background .2s; }
+  .lb-btn:hover { background:rgba(239,231,228,.18); }
+  .lb-btn:focus-visible { outline:2px solid #efe7e4; outline-offset:2px; }
+  .lb-close { top:18px; right:18px; }
+  .lb-prev { left:18px; top:50%; transform:translateY(-50%); }
+  .lb-next { right:18px; top:50%; transform:translateY(-50%); }
+  @media (max-width:600px) { .lb-prev, .lb-next { top:auto; bottom:22px; transform:none; } .lb-prev { left:calc(50% - 60px); } .lb-next { right:calc(50% - 60px); } .lightbox img { max-height:72vh; } }
+  .shop-note { margin-top:clamp(16px,2.4vh,26px); font-size:clamp(12px,.9vw,14px); line-height:1.8; }
+  .shop-info { font-size:clamp(12px,1vw,15px); line-height:1.85; }
+  .shop-info h2 { font-size:1em; font-weight:500; margin:0 0 .9em; }
+  .shop-info p { margin:0 0 1.4em; }
+  .shop-info .store {
+    display:inline-block; color:var(--ink); text-decoration:none; font-weight:600;
+    border-bottom:1.5px solid currentColor; padding-bottom:1px; margin-bottom:.35em; transition:opacity .2s;
+  }
+  .shop-info .store:hover { opacity:.6; }
+  .shop-info .store::after {
+    content:''; display:inline-block; width:.72em; height:.72em; margin-left:.35em; vertical-align:.02em;
+    background:currentColor; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='black' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9 9 3M4.5 3H9v4.5'/%3E%3C/svg%3E") center/contain no-repeat; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='black' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9 9 3M4.5 3H9v4.5'/%3E%3C/svg%3E") center/contain no-repeat;
+  }  /* 用線條箭頭，避免 iPhone 把 ↗ 變成 emoji */
+  .shop-info .divider { display:block; width:100%; height:auto; margin:.2em 0 1.4em; }
+  .shop-info .store-icon { width:1.15em; height:1.15em; border-radius:22%; vertical-align:-.2em; margin-right:.4em; }
+  .shop-info .place { font-weight:600; }
+  .shop-info .map { margin:0; font-size:.92em; }
+  html:lang(en) .shop-info { line-height:1.75; }
+  /* 中間插畫 */
+  .art {
+    position:relative;
+    height:min(calc(100vh - 60px), 1300px);
+    aspect-ratio:2480 / 3508;
+    user-select:none; -webkit-user-select:none;
+  }
+  .art canvas, .art img { position:absolute; display:block; }
+  .art img.frame { inset:0; width:100%; height:100%; pointer-events:none; }
+
+  /* 右側文字 */
+  .about h1 {
+    text-align:center; font-size:clamp(32px,3.2vw,48px);
+    letter-spacing:.06em; margin-bottom:clamp(16px,3vh,32px); font-weight:700;
+  }
+  .about h1 .name { display:block; margin:0 auto; width:auto; height:auto; max-width:100%; }  /* 原始大小，不縮放 */
+  /* 介紹文字中間的搖搖馬：以底座弧線為支點前後搖 */
+  .horse { width:min(33%,150px); margin:0 auto 1.8em; filter:drop-shadow(0 6px 8px rgba(60,40,40,.2)); }
+  .horse img { display:block; width:100%; height:auto; transform-origin:50% 98%; animation:rock 3.6s ease-in-out infinite; }
+  /* 參考 03.gif：以底座中心為支點左右各搖約 8.5 度，稍微前後滑動，2 秒一個來回 */
+  @keyframes rock {
+    0%, 100% { transform:translateX(0)     rotate(0deg); }
+    25%      { transform:translateX(-1.2%) rotate(-8.5deg); }
+    75%      { transform:translateX(1.2%)  rotate(8.5deg); }
+  }
+  @media (prefers-reduced-motion: reduce) { .horse img { animation:none; } }
+  .about p { font-size:clamp(12px,1vw,15px); line-height:1.95; margin-bottom:1.9em; text-align:justify; }
+
+  @media (max-width: 1000px) {
+    .page { grid-template-columns:1fr; justify-items:center; padding-top:0; row-gap:clamp(18px,4vw,32px); }
+    /* 手機版：頂部列（標題＋漢堡選單），選單收合 */
+    .side {
+      position:sticky; top:0; z-index:20; justify-self:stretch;
+      margin:0 calc(-1 * var(--pad)); padding:12px var(--pad);
+      display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
+      background:var(--bg); border-bottom:1px solid rgba(35,31,32,.18);
+    }
+    .side { display:grid; grid-template-columns:44px 1fr 44px; column-gap:8px; justify-items:center; align-items:center; }
+    .side > .crest {
+      grid-column:2; grid-row:1; width:min(28vw,108px); margin:0 0 2px;
+      max-height:130px; transition:max-height .35s ease, opacity .25s, margin .35s;
+    }
+    .side > .logo { grid-column:2; grid-row:2; }
+    .side > .burger { grid-column:3; grid-row:1 / span 3; }
+    .side > .lang { grid-column:2; grid-row:3; margin:2px 0 0; }
+    .side > .drawer { grid-column:1 / -1; grid-row:4; width:100%; }
+    /* 往下滑時把草莓收起，只留標題列 */
+    .side.scrolled > .crest { max-height:0; opacity:0; margin:0; overflow:hidden; }
+    .logo { width:min(58vw,230px); }
+    .burger {
+      display:inline-flex; flex-direction:column; justify-content:center; gap:6px;
+      width:44px; height:44px; padding:0 9px; background:none; border:0; cursor:pointer; color:var(--ink);
+    }
+    .burger span { display:block; height:2px; border-radius:2px; background:currentColor; transition:transform .3s, opacity .2s; }
+    .burger[aria-expanded="true"] span:nth-child(1) { transform:translateY(8px) rotate(45deg); }
+    .burger[aria-expanded="true"] span:nth-child(2) { opacity:0; }
+    .burger[aria-expanded="true"] span:nth-child(3) { transform:translateY(-8px) rotate(-45deg); }
+    .burger:focus-visible { outline:2px solid var(--ink); outline-offset:2px; border-radius:6px; }
+    .drawer { flex-basis:100%; display:grid; grid-template-rows:0fr; transition:grid-template-rows .35s ease; }
+    .drawer > * { min-height:0; }
+    .side.open .drawer { grid-template-rows:1fr; }
+    .drawer-inner { overflow:hidden; }
+    .menu { margin:14px auto 0; border:0; background:none; padding:4px 0; flex-direction:column; gap:6px; width:100%; }
+    .menu a { font-size:16px; margin:0; padding:10px 22px; }
+    .menu a:hover { transform:none; }
+    .icons { margin-top:14px; }
+    .icons { margin-bottom:10px; }
+    .art { height:auto; width:min(92vw,560px); }
+    .about p, .shop-info { font-size:15px; }  /* 手機維持 15px */
+    .shop-note { font-size:14px; }
+    body[data-view="shop"] .page, body[data-view="career"] .page, body[data-view="contact"] .page { grid-template-columns:1fr; }
+    .contact { justify-self:stretch; padding-top:0; }
+    .contact-form .row2 { grid-template-columns:1fr; }
+    .career { justify-self:stretch; padding-top:0; }
+    .career-year { grid-template-columns:54px minmax(0,1fr); gap:12px; }
+    .career-year li { font-size:14px; }
+    .shop { justify-self:stretch; padding-top:0; }
+    .berry.shop-berry { margin:24px auto 0; }
+    .shop-panel { grid-template-columns:1fr; margin-right:0; background:none; padding:0; }
+    .shop-grid { gap:8px; grid-template-columns:repeat(3,minmax(0,1fr)); }
+  }
+</style>
+</head>
+<body data-page="about">
+<div class="page">
+  <aside class="side">
+    <div class="crest home-link" role="link" tabindex="0" aria-label="首頁" data-i18n-aria="home_label"><img src="images/doll.webp" alt=""><img class="lid half" src="images/doll_half.webp" alt=""><img class="lid shut" src="images/doll_shut.webp" alt=""></div>
+    <img class="logo home-link" role="link" tabindex="0" src="images/logo.png" alt="Specimen of a Maiden" data-i18n-alt="logo_alt">
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="zh-Hant" aria-label="中文">ZH</button>
+      <button type="button" data-lang="en" aria-label="English">EN</button>
+      <button type="button" data-lang="ja" aria-label="日本語">JP</button>
+    </div>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="drawer" aria-label="選單" data-i18n-aria="menu_label"><span></span><span></span><span></span></button>
+    <div class="drawer" id="drawer"><div class="drawer-inner">
+    <nav class="menu">
+      <a href="#top" class="home-link" data-i18n="nav_about" data-page="about">關於Zihling</a>
+      <a href="#career" data-i18n="nav_career" data-page="career">創作經歷</a>
+      <a href="#" data-i18n="nav_works" data-page="works" hidden>繪畫作品</a>
+      <a href="#shop" data-i18n="nav_shop" data-page="shop">購買作品</a>
+      <a href="doll/" target="_blank" rel="noopener" data-i18n="nav_doll">紙娃娃小遊戲</a>
+      <a href="#contact" data-i18n="nav_contact" data-page="contact">聯絡我</a>
+    </nav>
+    <div class="icons">
+      <a href="https://www.instagram.com/zihlinghuang/" class="sns" target="_blank" rel="noopener" aria-label="Instagram"><img src="images/sns_ig.png" alt=""></a>
+      <a href="https://www.threads.com/@zihlinghuang" class="sns" target="_blank" rel="noopener" aria-label="Threads"><img src="images/sns_threads.png" alt=""></a>
+      <a href="https://www.facebook.com/zihling1120" class="sns" target="_blank" rel="noopener" aria-label="Facebook"><img src="images/sns_fb.png" alt=""></a>
+      <a href="https://line.me/ti/g2/p3TkuWGbIlBT2kXPSqwwQMZg_ud6lPTHOBTBWA?utm_source=invitation&amp;utm_medium=link_copy&amp;utm_campaign=default" class="sns" target="_blank" rel="noopener" aria-label="LINE"><img src="images/sns_line.png" alt=""></a>
+    </div>
+    </div></div>
+  </aside>
+
+  <div class="art" id="art">
+    <canvas data-eye="L"></canvas>
+    <canvas data-eye="R"></canvas>
+    <canvas data-eye="S"></canvas>
+    <img class="frame" src="images/frame.webp" alt="Zihling 插畫：草莓與蝴蝶結中的少女" data-i18n-alt="art_alt">
+  </div>
+
+  <section class="about" id="about">
+    <h1><img class="name" src="images/name.png" width="266" height="62" alt="Zihling Huang"></h1>
+    <p data-i18n="p1">Zihling（子玲）是出生於台灣桃園的創作者。創作受到陰柔意象吸引與啟發，進而以甜膩裡帶點詭異的圖像氛圍，建構理想的少女世界，而少女就是猶如洋娃娃一般的怪物，不斷的在人與非人之間遊走。</p>
+    <div class="horse" aria-hidden="true"><img src="images/horse_level.webp" alt=""></div>
+    <p data-i18n="p3">Zihling擅長描繪少女與運用小物配件來設計構圖，嘗試各式色彩變化，因此很常讓人聯想到愛麗絲夢遊仙境的天馬行空。</p>
+  </section>
+
+  <section class="career" id="career-view" hidden>
+    <h2 class="career-title" data-i18n="nav_career">創作經歷</h2>
+    <div class="career-filter" role="group" aria-label="Filter"></div>
+    <div class="career-list"></div>
+  </section>
+
+  <section class="contact" id="contact-view" hidden>
+    <h2 class="career-title" data-i18n="nav_contact">聯絡我</h2>
+    <p class="contact-lead" data-i18n="ct_lead">若有合作需求或其他問題，歡迎聯繫我。</p>
+    <form class="contact-form" novalidate>
+      <div class="row2">
+        <label><span data-i18n="ct_name">姓名</span><input name="name" autocomplete="name" required></label>
+        <label><span data-i18n="ct_email">Email</span><input name="email" type="email" autocomplete="email" required></label>
+      </div>
+      <label><span data-i18n="ct_subject">主旨</span><input name="subject" required></label>
+      <label><span data-i18n="ct_message">內容</span><textarea name="message" rows="7" required></textarea></label>
+      <p class="ct-error" role="alert" hidden data-i18n="ct_error">請填寫所有欄位，並確認 Email 格式正確。</p>
+      <button type="submit" class="ct-send" data-i18n="ct_send">寄出</button>
+      <p class="ct-done" role="status" hidden></p>
+      <span hidden data-i18n="ct_sent" id="ct-sent">已送出，謝謝你的來信！我會盡快回覆。</span><span hidden data-i18n="ct_done" id="ct-mail">已開啟你的郵件程式，信件內容都填好了，請在郵件程式裡按下「傳送」。</span>
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+    </form>
+  </section>
+
+  <section class="shop" id="shop-view" hidden>
+    <div class="shop-panel">
+      <div class="shop-main">
+        <ul class="shop-grid">
+        <li><img src="images/shop/s1.webp" data-full="images/shop/b1.webp" tabindex="0" role="button" alt="壓克力鑰匙圈" loading="lazy"></li>
+        <li><img src="images/shop/s2.webp" data-full="images/shop/b2.webp" tabindex="0" role="button" alt="金魚印花披肩領" loading="lazy"></li>
+        <li><img src="images/shop/s3.webp" data-full="images/shop/b3.webp" tabindex="0" role="button" alt="少女貼紙" loading="lazy"></li>
+        <li><img src="images/shop/s4.webp" data-full="images/shop/b4.webp" tabindex="0" role="button" alt="明信片組" loading="lazy"></li>
+        <li><img src="images/shop/s5.webp" data-full="images/shop/b5.webp" tabindex="0" role="button" alt="白色系透明貼紙" loading="lazy"></li>
+        <li><img src="images/shop/s6.webp" data-full="images/shop/b6.webp" tabindex="0" role="button" alt="筆袋與卡片夾" loading="lazy"></li>
+        <li><img src="images/shop/s7.webp" data-full="images/shop/b7.webp" tabindex="0" role="button" alt="熊熊貼紙" loading="lazy"></li>
+        <li><img src="images/shop/s8.webp" data-full="images/shop/b8.webp" tabindex="0" role="button" alt="手帳本" loading="lazy"></li>
+        <li><img src="images/shop/s9.webp" data-full="images/shop/b9.webp" tabindex="0" role="button" alt="蕾絲襪" loading="lazy"></li>
+        </ul>
+        <p class="shop-note" data-i18n="shop_note">商品庫存可能隨時變動，實際供貨情況請以賣場現貨為準，還請見諒。</p>
+      </div>
+      <div class="shop-info">
+        <h2 data-i18n="shop_online">線上購買</h2>
+        <img class="store-icon" src="images/myship.png" alt="" aria-hidden="true"><a class="store" href="https://myship.7-11.com.tw/general/detail/GM2502072232544" target="_blank" rel="noopener" data-i18n="shop_myship">賣貨便｜台灣地區</a>
+        <p data-i18n="shop_myship_desc">台灣的朋友請點擊上方按鈕進行購買，提供超商取貨付款，快速又方便，還有不定期的運費優惠！</p>
+        <img class="store-icon" src="images/pinkoi.png" alt="" aria-hidden="true"><a class="store" href="https://www.pinkoi.com/store/zihling" target="_blank" rel="noopener" data-i18n="shop_pinkoi">Pinkoi｜海外地區</a>
+        <p data-i18n="shop_pinkoi_desc">提供海外同好購買管道，無論身在何處，都歡迎透過 Pinkoi 支持我的創作。</p>
+        <img class="divider" src="images/divider.png" alt="" aria-hidden="true">
+        <h2 data-i18n="shop_offline">實體寄售點</h2>
+        <p><img class="store-icon" src="images/pier2.png" alt="" aria-hidden="true"><span class="place" data-i18n="shop_place">駁二藝術特區｜漫畫便當店</span><br><span data-i18n="shop_addr1">駁二大義區C7動漫倉庫</span><br><span data-i18n="shop_addr2">高雄市鹽埕區大勇路1號</span><br><a class="store map" href="https://www.google.com/maps/place/%E9%A7%81%E4%BA%8C%E5%8B%95%E6%BC%AB%E5%80%89%E5%BA%AB/@22.6188163,120.2855531,122m/data=!3m1!1e3!4m6!3m5!1s0x346e039a55567ccb:0x6237ff3974e459eb!8m2!3d22.618977!4d120.2853859!16s%2Fg%2F11ts3yrgf9" target="_blank" rel="noopener" data-i18n="shop_map">在 Google 地圖查看</a></p>
+        <div class="berry shop-berry" aria-hidden="true"><img src="images/header.webp" alt=""><img class="lid half" src="images/crest_half.webp" alt=""><img class="lid shut" src="images/crest_shut.webp" alt=""></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Photo">
+  <button class="lb-btn lb-close" type="button" aria-label="Close">×</button>
+  <button class="lb-btn lb-prev" type="button" aria-label="Previous">‹</button>
+  <figure><img alt=""><figcaption></figcaption></figure>
+  <button class="lb-btn lb-next" type="button" aria-label="Next">›</button>
+</div>
+<script>
+(() => {
+  // ===== 可調整的參數 =====
+  // 座標都是 PSD 原尺寸 (2480×3508) 的像素
+  const DOC_W = 2480, DOC_H = 3508;
+  const EYES = {
+    // wx,wy=眼白左上角  ix,iy=眼球左上角  maxX/maxY=眼球最多可移動幾px  group=同組的眼睛一起看
+    L: { wx:1034, wy:1121, ww:130, wh:74,  ix:1051, iy:1110, iw:120, ih:84,  maxX:16, maxY:6,  group:'girl', w:'images/wL.png', i:'images/iL.png' },
+    R: { wx:1164, wy:1121, ww:150, wh:74,  ix:1171, iy:1110, iw:137, ih:84,  maxX:16, maxY:6,  group:'girl', w:'images/wR.png', i:'images/iR.png' },
+    S: { wx:1951, wy:709,  ww:225, wh:232, ix:2007, iy:722,  iw:141, ih:153, maxX:38, maxY:34, group:'berry', w:'images/wS.png', i:'images/iS.png' },
+  };
+  const ASSET_SCALE = 0.5;   // 素材是原圖的一半大小
+  const EASE = 0.12;         // 眼球跟隨的平滑度（越小越慢越柔）
+  const REACH = 0.35;        // 滑鼠離眼睛多遠（以插畫寬度比例計）時眼球轉到最邊
+
+  const art = document.getElementById('art');
+  const pct = (v, total) => (v / total * 100) + '%';
+  const load = src => new Promise(r => { const im = new Image(); im.onload = () => r(im); im.src = src; });
+
+  const eyes = [];
+  Promise.all(Object.entries(EYES).map(async ([k, e]) => {
+    const [white, iris] = await Promise.all([load(e.w), load(e.i)]);
+    const cv = art.querySelector(`canvas[data-eye="${k}"]`);
+    cv.width = Math.round(e.ww * ASSET_SCALE); cv.height = Math.round(e.wh * ASSET_SCALE);
+    Object.assign(cv.style, { left:pct(e.wx, DOC_W), top:pct(e.wy, DOC_H), width:pct(e.ww, DOC_W), height:pct(e.wh, DOC_H) });
+    eyes.push({ k, e, cv, ctx: cv.getContext('2d'), white, iris, x:0, y:0, tx:0, ty:0 });
+  })).then(() => { draw(true); requestAnimationFrame(loop); });
+
+  // ---- 指標追蹤 ----
+  let pointer = null, lastMove = 0;
+  const setPointer = (x, y) => { pointer = { x, y }; lastMove = performance.now(); };
+  addEventListener('pointermove', ev => setPointer(ev.clientX, ev.clientY), { passive:true });
+  addEventListener('touchmove', ev => { const t = ev.touches[0]; if (t) setPointer(t.clientX, t.clientY); }, { passive:true });
+  document.addEventListener('mouseleave', () => { pointer = null; });
+
+  // 沒有滑鼠時（離開視窗或手機沒觸控）偶爾自己東張西望
+  // 手機版（觸控螢幕或窄版面）：不跟手指，眼睛自己東看西看；女孩和草莓各看各的
+  const mobileMQ = matchMedia('(max-width: 1000px), (hover: none)');
+  let idle = { girl:{x:0,y:0}, berry:{x:0,y:0} };
+  const nextGlance = { girl:0, berry:600 };
+  function idleTargets(now) {
+    const mobile = mobileMQ.matches;
+    for (const g in idle) {
+      if (now < nextGlance[g]) continue;
+      const a = Math.random() * Math.PI * 2, r = Math.random() < .25 ? 0 : .5 + Math.random() * .5;
+      idle[g] = { x: Math.cos(a) * r, y: Math.sin(a) * r };
+      nextGlance[g] = now + (mobile ? 900 + Math.random() * 1900 : 1800 + Math.random() * 2600);
+    }
+  }
+
+  function groupCenter(group) {
+    const list = eyes.filter(o => o.e.group === group);
+    let x = 0, y = 0;
+    for (const o of list) { const r = o.cv.getBoundingClientRect(); x += r.left + r.width / 2; y += r.top + r.height / 2; }
+    return { x: x / list.length, y: y / list.length };
+  }
+
+  function loop(now) {
+    const usePointer = !mobileMQ.matches && pointer && now - lastMove < 6000;
+    if (!usePointer) idleTargets(now);
+    const artW = art.getBoundingClientRect().width;
+    const centers = {};
+    for (const o of eyes) {
+      const g = o.e.group;
+      let nx, ny;
+      if (usePointer) {
+        const c = centers[g] || (centers[g] = groupCenter(g));   // 同組眼睛看同一方向，不會鬥雞眼
+        const dx = pointer.x - c.x, dy = pointer.y - c.y;
+        const d = Math.hypot(dx, dy) || 1;
+        const t = Math.min(d / (artW * REACH), 1);
+        nx = dx / d * t; ny = dy / d * t;
+      } else { nx = idle[g].x; ny = idle[g].y; }
+      o.tx = nx * o.e.maxX; o.ty = ny * o.e.maxY;
+      o.x += (o.tx - o.x) * EASE; o.y += (o.ty - o.y) * EASE;
+    }
+    draw(false);
+    requestAnimationFrame(loop);
+  }
+
+  function draw(force) {
+    for (const o of eyes) {
+      const key = o.x.toFixed(2) + ',' + o.y.toFixed(2);
+      if (!force && key === o.last) continue;
+      o.last = key;
+      const { ctx, cv, e } = o, s = ASSET_SCALE;
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      ctx.drawImage(o.white, 0, 0, cv.width, cv.height);
+      ctx.globalCompositeOperation = 'source-atop';           // 眼球只畫在眼白範圍內
+      ctx.drawImage(o.iris, (e.ix - e.wx + o.x) * s, (e.iy - e.wy + o.y) * s, e.iw * s, e.ih * s);
+    }
+  }
+})();
+</script>
+
+<script>
+{
+  const T = {
+    'zh-Hant': {
+      title:'Specimen of a Maiden｜Zihling',
+      nav_about:'關於Zihling', nav_career:'創作經歷', nav_works:'繪畫作品', nav_shop:'購買作品', nav_doll:'紙娃娃小遊戲', nav_contact:'聯絡我', menu_label:'選單', home_label:'回首頁', ct_lead:'若有合作需求或其他問題，歡迎聯繫我。', ct_name:'姓名', ct_email:'Email', ct_subject:'主旨', ct_message:'內容', ct_send:'寄出', ct_error:'請填寫所有欄位，並確認 Email 格式正確。', ct_sent:'已送出，謝謝你的來信！我會盡快回覆。', ct_done:'已開啟你的郵件程式，信件內容都填好了，請在郵件程式裡按下「傳送」。', ct_direct:'也可以直接寫信到：',
+      shop_online:'線上購買', shop_myship:'賣貨便｜台灣地區', shop_myship_desc:'台灣的朋友請點擊上方按鈕進行購買，提供超商取貨付款，快速又方便，還有不定期的運費優惠！',
+      shop_pinkoi:'Pinkoi｜海外地區', shop_pinkoi_desc:'提供海外同好購買管道，無論身在何處，都歡迎透過 Pinkoi 支持我的創作。',
+      shop_offline:'實體寄售點', shop_place:'駁二藝術特區｜漫畫便當店', shop_addr1:'駁二大義區C7動漫倉庫', shop_addr2:'高雄市鹽埕區大勇路1號', shop_map:'在 Google 地圖查看',
+      shop_note:'商品庫存可能隨時變動，實際供貨情況請以賣場現貨為準，還請見諒。',
+      logo_alt:'Specimen of a Maiden', art_alt:'Zihling 插畫：草莓與蝴蝶結中的少女',
+      p1:'Zihling（子玲）是出生於台灣桃園的創作者。創作受到陰柔意象吸引與啟發，進而以甜膩裡帶點詭異的圖像氛圍，建構理想的少女世界，而少女就是猶如洋娃娃一般的怪物，不斷的在人與非人之間遊走。',
+      p2:'在傳統價值的鼓勵之下，大部分的人壓抑了自己其實「不那麼快樂」、「不那麼開朗」、「不那麼像普通人」等多種被貼上負面標籤的面向，加上社群媒體發達的時代下，人人都想展現出陽光開心的一面；但有別於主流市場，Zihling的作品選擇擁抱自己的黑暗面，也因此意外地得到許多人的回饋，表示「從Zihling的畫作中得到了療癒感」。',
+      p3:'Zihling擅長描繪少女與運用小物配件來設計構圖，嘗試各式色彩變化，因此很常讓人聯想到愛麗絲夢遊仙境的天馬行空。'
+    },
+    en: {
+      title:'Specimen of a Maiden｜Zihling',
+      nav_about:'About Zihling', nav_career:'Experience', nav_works:'Artworks', nav_shop:'Shop', nav_doll:'Paper Doll Game', nav_contact:'Contact', menu_label:'Menu', home_label:'Home', ct_lead:'If you would like to work with me or have further questions, you are welcome to get in touch.', ct_name:'Name', ct_email:'Email', ct_subject:'Subject', ct_message:'Message', ct_send:'Send', ct_error:'Please fill in every field and check your email address.', ct_sent:'Sent — thank you for your message! I will get back to you soon.', ct_done:'Your email app has opened with the message filled in. Please press Send there.', ct_direct:'Or email me directly:',
+      shop_online:'Shop online', shop_myship:'MyShip｜Taiwan', shop_myship_desc:'For friends in Taiwan, tap the link above to order. Pay on pickup at convenience stores — quick and easy, with occasional shipping discounts!',
+      shop_pinkoi:'Pinkoi｜International', shop_pinkoi_desc:'For fans outside Taiwan: wherever you are, you are welcome to support my work through Pinkoi.',
+      shop_offline:'Consignment shop', shop_place:'Pier-2 Art Center｜Manga Bento Shop', shop_addr1:'C7 Anime Warehouse, Dayi Area, Pier-2', shop_addr2:'No. 1, Dayong Rd., Yancheng Dist., Kaohsiung', shop_map:'View on Google Maps',
+      shop_note:'Stock may change at any time — please check the store listing for current availability. Thank you for understanding.',
+      logo_alt:'Specimen of a Maiden', art_alt:'Illustration by Zihling: a girl surrounded by strawberries and ribbons',
+      p1:'Zihling (子玲) is an artist born in Taoyuan, Taiwan. Drawn to and inspired by delicate, feminine imagery, Zihling builds an ideal world of girls in images that are sweet with a hint of the uncanny — a world where the girl is a doll-like monster, forever drifting between the human and the inhuman.',
+      p2:'Encouraged by conventional values, most people suppress the sides of themselves that get labeled as negative — being “not so happy,” “not so cheerful,” “not quite like everyone else.” And in the age of social media, everyone wants to show a bright, happy face. Stepping away from the mainstream, Zihling’s work chooses to embrace its own darkness — and, unexpectedly, many people have shared that they “found comfort and healing in Zihling’s art.”',
+      p3:'Zihling specializes in drawing girls and in building compositions around small objects and accessories, experimenting with all kinds of color — which is why the work so often recalls the boundless imagination of Alice in Wonderland.'
+    },
+    ja: {
+      title:'Specimen of a Maiden｜Zihling',
+      nav_about:'Zihlingについて', nav_career:'創作歴', nav_works:'作品', nav_shop:'作品を購入', nav_doll:'着せ替えゲーム', nav_contact:'お問い合わせ', menu_label:'メニュー', home_label:'ホーム', ct_lead:'お仕事のご依頼やご質問は、お気軽にご連絡ください。', ct_name:'お名前', ct_email:'メールアドレス', ct_subject:'件名', ct_message:'内容', ct_send:'送信', ct_error:'すべての項目を入力し、メールアドレスをご確認ください。', ct_sent:'送信しました。ご連絡ありがとうございます！できるだけ早くお返事します。', ct_done:'メールアプリが開き、内容が入力されています。メールアプリで送信ボタンを押してください。', ct_direct:'直接メールを送ることもできます：',
+      shop_online:'オンラインショップ', shop_myship:'賣貨便｜台湾国内', shop_myship_desc:'台湾にお住まいの方は上のリンクからご購入ください。コンビニ受け取り・代金引換に対応しており、不定期で送料割引もあります！',
+      shop_pinkoi:'Pinkoi｜海外のお客様', shop_pinkoi_desc:'海外のファンの方向けの購入窓口です。どこにいても、Pinkoi から私の創作を応援していただけると嬉しいです。',
+      shop_offline:'委託販売店舗', shop_place:'駁二芸術特区｜漫画弁当店', shop_addr1:'駁二大義エリア C7 アニメ倉庫', shop_addr2:'高雄市塩埕区大勇路1号', shop_map:'Google マップで見る',
+      shop_note:'在庫は随時変動する場合があります。実際の在庫状況は各ショップをご確認ください。ご了承ください。',
+      logo_alt:'Specimen of a Maiden', art_alt:'Zihlingのイラスト：苺とリボンに囲まれた少女',
+      p1:'Zihling（子玲）は台湾・桃園出身のクリエイターです。陰柔なイメージに惹かれ、そこから着想を得て、甘さの中にどこか不気味さを漂わせる画面で、理想の少女の世界を描いています。その少女は、まるで人形のような怪物であり、人と人ならざるものの狭間を絶えずさまよっています。',
+      p2:'伝統的な価値観に後押しされ、多くの人は「それほど幸せではない」「それほど明るくない」「普通の人らしくない」といった、ネガティブなレッテルを貼られがちな自分の一面を押し殺しています。さらにSNSが発達した今、誰もが明るく楽しそうな姿を見せたがります。けれども主流とは異なり、Zihlingの作品は自らの闇を抱きしめることを選びました。その結果、思いがけず多くの人から「Zihlingの絵に癒やされた」という声が届いています。',
+      p3:'Zihlingは少女の描写と、小物やアクセサリーを用いた構図づくりを得意とし、さまざまな色彩表現に挑戦しています。そのため作品はしばしば、『不思議の国のアリス』のような自由奔放な想像の世界を思わせます。'
+    }
+  };
+  const KEY = 'zihling-lang';
+  function apply(lang) {
+    const t = T[lang] || T['zh-Hant'];
+    document.documentElement.lang = lang;
+    document.title = t.title;
+    document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t[el.dataset.i18n]; });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t[el.dataset.i18nAria]); });
+    document.querySelectorAll('[data-i18n-alt]').forEach(el => { el.alt = t[el.dataset.i18nAlt]; });
+    document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    try { localStorage.setItem(KEY, lang); } catch (e) {}
+  }
+  let start = null;
+  try { start = localStorage.getItem(KEY); } catch (e) {}
+  if (!T[start]) {
+    const nav = (navigator.language || '').toLowerCase();
+    start = nav.startsWith('ja') ? 'ja' : nav.startsWith('zh') ? 'zh-Hant' : nav.startsWith('en') ? 'en' : 'zh-Hant';
+  }
+  document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => apply(b.dataset.lang)));
+  apply(start);
+}
+</script>
+<script>
+{
+  // 選單：選到的頁面按鈕變色。之後每一頁做好時，把 <body data-page="..."> 設成該頁名稱即可
+  const links = [...document.querySelectorAll('.menu a[data-page]')];
+  const setActive = page => links.forEach(a => a.dataset.page === page ? a.setAttribute('aria-current','page') : a.removeAttribute('aria-current'));
+  setActive(document.body.dataset.page || 'about');
+  // 頁面切換：網址 #shop 顯示購買作品，其他（空白）顯示首頁
+  const VIEWS = { shop:'shop', career:'career', contact:'contact' };
+  const show = () => {
+    const v = VIEWS[location.hash.slice(1)] || 'about';
+    document.body.dataset.view = v;
+    document.getElementById('shop-view').hidden = v !== 'shop';
+    document.getElementById('career-view').hidden = v !== 'career';
+    document.getElementById('contact-view').hidden = v !== 'contact';
+    setActive(v);
+  };
+  addEventListener('hashchange', () => { show(); scrollTo(0,0); });
+  show();
+  const closeMenu = () => { document.querySelector('.side').classList.remove('open'); document.querySelector('.burger').setAttribute('aria-expanded','false'); };
+  // 首頁：點標題、娃娃或「關於Zihling」都回到首頁最上方
+  const goHome = ev => {
+    if (ev) ev.preventDefault();
+    if (location.hash) location.hash = '';
+    show(); closeMenu();
+    scrollTo({ top:0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  };
+  document.querySelectorAll('.home-link').forEach(el => {
+    el.addEventListener('click', goHome);
+    el.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') goHome(ev); });
+  });
+  links.forEach(a => a.addEventListener('click', ev => {
+    if (a.getAttribute('href') === '#') ev.preventDefault();   // 還沒做好的頁面先不跳轉
+    setActive(a.dataset.page);
+  }));
+  // 商店／社群連結還沒填網址時先不開新分頁
+  document.querySelectorAll('.store, .sns').forEach(a => a.addEventListener('click', ev => { if (a.getAttribute('href') === '#') ev.preventDefault(); }));
+}
+</script>
+<script>
+{
+  // 手機版漢堡選單：點開／收合，點選項目、點外面或按 Esc 會自動收起
+  const side = document.querySelector('.side'), btn = document.querySelector('.burger');
+  const setOpen = open => { side.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open)); };
+  btn.addEventListener('click', () => setOpen(!side.classList.contains('open')));
+  document.querySelectorAll('.menu a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('click', e => { if (!side.contains(e.target)) setOpen(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') setOpen(false); });
+  const onScroll = () => side.classList.toggle('scrolled', scrollY > 40);
+  addEventListener('scroll', onScroll, { passive:true }); onScroll();
+  matchMedia('(min-width: 1001px)').addEventListener('change', e => { if (e.matches) setOpen(false); });
+}
+</script>
+<script>
+{
+  // 商品照片點開放大：左右切換、Esc 或點背景關閉、手機可左右滑
+  const imgs = [...document.querySelectorAll('.shop-grid img')];
+  const box = document.getElementById('lightbox'), big = box.querySelector('img'), cap = box.querySelector('figcaption');
+  let cur = 0, lastFocus = null, sx = null;
+  const show = i => { cur = (i + imgs.length) % imgs.length; big.src = imgs[cur].dataset.full; big.alt = imgs[cur].alt; cap.textContent = (cur+1) + ' / ' + imgs.length; big.style.animation='none'; big.offsetWidth; big.style.animation=''; };
+  const open = i => { lastFocus = document.activeElement; show(i); box.hidden = false; document.body.style.overflow='hidden'; box.querySelector('.lb-close').focus(); };
+  const close = () => { box.hidden = true; document.body.style.overflow=''; if (lastFocus) lastFocus.focus(); };
+  imgs.forEach((im, i) => {
+    im.addEventListener('click', () => open(i));
+    im.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); } });
+  });
+  box.querySelector('.lb-close').addEventListener('click', close);
+  box.querySelector('.lb-prev').addEventListener('click', e => { e.stopPropagation(); show(cur-1); });
+  box.querySelector('.lb-next').addEventListener('click', e => { e.stopPropagation(); show(cur+1); });
+  box.addEventListener('click', e => { if (e.target === box || e.target.tagName === 'FIGURE') close(); });
+  document.addEventListener('keydown', e => {
+    if (box.hidden) return;
+    if (e.key === 'Escape') close(); else if (e.key === 'ArrowLeft') show(cur-1); else if (e.key === 'ArrowRight') show(cur+1);
+  });
+  box.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive:true });
+  box.addEventListener('touchend', e => { if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1)); sx = null; });
+}
+</script>
+<script>
+{
+  // 創作經歷：資料來自 Notion Sales Kit（2014–2025）。新增經歷時，在對應年份加一行 ['類別','內容'] 即可
+  const CAREER = [["2025", [["聯名合作", "WINK PHOTO韓式拍貼館圖框設計", "https://www.plurk.com/p/3hfpqkknal"], ["雙人展", "重縫少女 Zihling × 草本菟刻 /台灣 駁二藝術特區", "https://www.instagram.com/p/DLrksuST4P9/"], ["聯名合作", "ViewFinder X Zihling Ribbon Party – 寬版落肩T", "https://www.viewfinder.com.tw/product/zihling-ribbon-party/"], ["聯名合作", "好憶甜點 H&E X Zihling 鐵盒餅乾 dessert Velvet Serenade◆天鵝絨小夜曲", "https://hedessert.waca.tw/product/detail/2189030/zihlinghuang"], ["聯名合作", "Little Rose Planet X Zihling 吸血鬼少女來訪日 Lolita洋裝", "https://www.facebook.com/media/set/?set=a.1017948703684271&type=3"]]], ["2024", [["聯名合作", "Little Rose Planet X Zihling 2024 Seven seconds romance Special limited edition", "https://www.facebook.com/media/set/?set=a.942748024537673&type=3"], ["聯名合作", "愛花製作所xZihling 聯名瑪莉珍鞋", "https://www.instagram.com/p/DBx9DYbzgyW/"], ["聯名合作", "Palipali韓式拍貼館圖框設計", "https://www.plurk.com/p/3g09gikdlj"], ["聯名合作", "More Shot韓式拍貼機圖框設計", "https://www.instagram.com/p/C4x1yzFviIr/"], ["聯名合作", "Zihling x CreASEnse 創感品味 手機殼聯名第三彈", "https://creasense.tw/collections/power-bank-zihling?ref=LOVEZIH"]]], ["2023", [["個展", "GOSULOLI /日本 Gomeisa GALLERY", "https://www.instagram.com/p/CtjG28eyzQt/"], ["雜誌曝光", "ExtrART file.36 ◎FEATURE：白昼夢の劇場／少女の遊戯", "https://athird.cart.fc2.com/ca7/377/p-r-s/"], ["聯名合作", "愛花製作所xZihling 聯名樂福鞋", "https://www.instagram.com/p/CoHUQ1GSjAA/"]]], ["2022", [["個展", "モノドラマ /日本 gallery hydrangea", "https://gallery-hydrangea.shopinfo.jp/posts/38131508/"], ["聯名合作", "ABIS 亞比斯醫用口罩印花聯名", "https://mask.abis-it.com/search?q=zihling"], ["聯展", "2022 OneOffs NFT 國際藝術博覽會 /透視藝術空間", "https://www.facebook.com/zihling1120/posts/pfbid028CgryqCxqF6jrYqZuz9JsfyspG9mxncnxchoJLazHQssSjU9kSdrb3GHBsdLdbSwl"], ["聯名合作", "自己印 紙膠帶印花聯名", "https://taipeiurtape.easy.co/search?q=zihling"], ["個展", "學院女子圖錄 /台北 誠品生活南西店 自己印專櫃", "https://www.facebook.com/zihling1120/posts/pfbid028FXaNLUCopqCJbhsBQt7D5ZFLmVXygMuskxrbiFEeGXKpW8kPtN9KG6SDiqBGgRxl"], ["雙人展", "歎息夜 Sighing Night 草本菟刻& Zihling 雙人展 / 台北衛星", "https://www.facebook.com/events/401280335549030/401280392215691"], ["聯名合作", "yunivers hsieh SYMBIOSIS共生 藝術家聯名 限定手繪石英錶", "https://yunivershsieh.com/products/stray-lamb-symbiosis-art-series-yunivers-hsieh"], ["個展", "獨腳戲/台南白兔美術社", "https://www.facebook.com/zihling1120/posts/pfbid02hS6cdr2zYi8Uph6LjM33XUNjrAjsv5YgzHrETz4ErQbWMJJSDTTUP59i3WZmNVGEl"], ["聯名合作", "Zihling x CreASEnse 創感品味 行動電源聯名", "https://creasense.tw/collections/power-bank-zihling?ref=LOVEZIH"], ["聯展", "Art around the World vol.1 - Beautiful - /日本大阪 ギャラリーIYN", "https://www.gallery-iyn.com/post/beautiful"], ["聯展", "Penker X Pethany+Larsen手繪馬克杯聯展 /台灣台北Pethany+Larsen信義誠品店", "https://www.facebook.com/zihling1120/posts/pfbid0iiJhqz93vVrreVah6QHeTirujATTvByUs8G7fSJntMfigDHSkAnn6zV6H31u6pESl"], ["聯名合作", "Zihling x CreASEnse 創感品味 手機殼聯名第二彈 支援多種型號", "https://c3s.tw/zihling"], ["個展", "夢の中で泣いている /日本大阪 ギャラリーIYN", "https://www.gallery-iyn.com/post/zihling_solo-exhibition"]]], ["2021", [["聯名合作", "Zihling X HUMI 小金魚與山茶花 滑鼠墊聯名", "https://www.humi.com.tw/zh/product/78"], ["聯名合作", "Zihling X HUMI 小熊依存症 滑鼠墊聯名", "https://www.humi.com.tw/zh/product/77"], ["商業委託", "眠璃姫子 presents『 ✝️Fallen Marriage✝️』似顏繪", "https://www.facebook.com/zihling1120/posts/411368880360729"], ["個展", "天使的悄悄話 /台灣台北 誠品生活南西店 自己印專櫃", "https://www.facebook.com/events/2907809372803478"], ["聯展", "書，酒，與音樂－－衛星開幕紀念聯展/台灣台北 衛星", "https://www.facebook.com/events/253718126576416"], ["聯名合作", "Zihling x CreASEnse 創感品味 手機殼聯名 支援多種型號", "https://c3s.tw/zihling"], ["聯名合作", "Little Rose Planet X Zihling 馬戲團迷遊Lolita fashion復刻改款", "https://www.facebook.com/media/set/?vanity=littleroseplanet&set=a.3333518463426472"]]], ["2020", [["POP-UP SHOP", "Miss Summer X 閣樓日 「書櫃裡的白日夢」/香港 Miss Summer the store", "https://www.instagram.com/p/CFtxDlaFVJ0/"], ["形象視覺", "草本菟刻 眠夏 Eva BJD三分娃頭形象視覺插畫", "https://www.instagram.com/p/CE9kkQ3l_An/"], ["聯展", "♫ 臺灣唱片致敬展「愛的蓋台」Vol. 2 ♫/台灣台北Mangasick", "https://www.facebook.com/events/955746941503198/"], ["聯展", "花樣羅曼史-羅莉塔時尚特展/臺灣漫畫基地", "https://www.tcb.tw/zh/activity_exhibition/2"], ["互動分享", "picrew紙娃娃上線", "https://picrew.me/image_maker/403353"]]], ["2019", [["形象視覺", "草本菟刻 夏娃 Eva BJD三分娃頭形象視覺插畫", "https://www.facebook.com/zihling1120/posts/3393123250728647"], ["聯展", "Room Bloom /日本gallery hydrangea", "https://gallery-hydrangea.shopinfo.jp/posts/6948244"], ["圖像授權", "Little Rose Planet X Zihling 淑女貓的收藏室 Lady cat's treasure room", "https://www.facebook.com/pg/littleroseplanet/photos/?tab=album&album_id=1598963606881975"], ["聯展", "Matryoshka Custom Show/台灣台北Wrong Gallery Taipei", "https://www.facebook.com/events/477841516101886/"], ["ART BOOK出版", "Sweet Dream 美夢/台灣台北Mangasick", "https://mangasickxox.waca.store/product/detail/363346"], ["個展", "Goodnight, My Baby/台灣台北Mangasick", "https://www.facebook.com/events/340727663524026/"], ["活動視覺", "霍夫曼的玩具箱2019年11月場主視覺", "http://www.hoffmanntb.com/"]]], ["2018", [["Line貼圖", "Zihling Doll", "https://store.line.me/stickershop/product/4370533"], ["圖像授權", "Little Rose Planet X Zihling COSMOS tighs", "https://www.facebook.com/pg/littleroseplanet/photos/?tab=album&album_id=1598963606881975"], ["雙人展", "BLACK DREAM：Zihling & 理想武器 / 紀物＋Documentary＋", "https://www.facebook.com/events/283233815733863/"], ["獨立出版", "Zihling Doll", "https://www.facebook.com/zihling1120/posts/2143845695656415"], ["聯名合作", "Little Rose Planet X Zihling Seven seconds romance服裝聯名", "https://goo.gl/VcceKN"], ["活動視覺", "霍夫曼的玩具箱2018年11月場主視覺", "http://www.hoffmanntb.com/"], ["單曲插畫&網站製作", "6xt7-Kingdom", "https://www.6xt7.com/"], ["專輯插畫", "IRUMA RIOKA-Gateau Chocolat Catharsis", "http://irumarin.com/"]]], ["2017", [["聯展", "Alice 2017 /六本木ストライプスペース", "http://www.span-art.co.jp/exhibition_other/201707alice.html"], ["聯名合作", "Little Rose Planet X Zihling Curiouser Curiouser and Curiouser服裝聯名", "https://www.facebook.com/pg/LittleRosePlanet/photos/?tab=album&album_id=1288063514638654"], ["個展", "洋娃娃輓歌/台灣台北Mangasick", "https://www.facebook.com/events/315287328881926/"], ["聯名合作", "Little Rose Planet X Zihling Curiouser Journey Lolita fashion服裝聯名", "https://www.facebook.com/LittleRosePlanet"], ["活動視覺", "霍夫曼的玩具箱2017 年2月場主視覺", "http://www.hoffmanntb.com/"]]], ["2016", [["聯名合作", "Zihling x 草本菟刻x瑞子 Mirror Mirror球體關節人形", "https://www.facebook.com/pg/CAMD.2008/photos/?tab=album&album_id=1878344852387334"], ["Line主題", "Girl's Daydream", "https://store.line.me/themeshop/product/f7fd48da-c0d9-4aa1-bc70-80950e4ea2d9"], ["專輯插畫", "Aristophanes貍貓-Humans Become Machines", "https://soundcloud.com/aristophanesmusic"], ["專輯插畫", "Aristophanes貍貓-3001: A Space Disco", "https://soundcloud.com/aristophanesmusic"], ["專輯插畫", "Aristophanes貍貓-Peach Blossom", "https://open.spotify.com/album/1hbw7IJoMMTEOYmUH86XuL"], ["專輯插畫", "Aristophanes貍貓-No Rush To Leave Dreams", "https://open.spotify.com/album/7eSw4Wb1kojdqWfyfa7rai"], ["聯名合作", "Little Rose Planet X Zihling 馬戲團迷遊Lolita fashion服裝聯名", "https://www.facebook.com/LittleRosePlanet"], ["獨立出版", "象牙塔裡的羅曼史", "http://zih-ling.wixsite.com/ivory-tower/book"]]], ["2015", [["廣播訪問", "動漫我要聽", "https://goo.gl/wcbAQS"], ["雜誌曝光", "別冊TH ExtrART file.04〜少女は、心の奥に、なに秘める", "http://athird.cart.fc2.com/ca7/122/p-r-s/"], ["手機主題", "[+]HOME 款式一、款式二", "https://play.google.com/store/apps/details?id=jp.co.a_tm.android.plus_romantic_day_dream"], ["聯名合作", "Zihling x 草本菟刻 Doll Cage球體關節人形", "https://www.facebook.com/pg/capsulesculpt/photos/?tab=album&album_id=662855527184224"], ["個展", "怪物少女學/台灣台北Mangasick", "https://www.facebook.com/events/756765994431881/"], ["聯展", "少女マニエリスム グループ展/東京スパンアートギャラリー", "http://www.span-art.co.jp/exhibition/201506mannerism.html"], ["聯展", "Year of the Sheep Group Show/台灣台北Wrong Gallery Taipei", "https://www.facebook.com/events/947896495230143/"], ["聯展", "第三回ヴァニラ画廊大賞展/日本東京ヴァニラ画廊", "http://www.vanilla-gallery.com/index.html"]]], ["2014", [["獨立出版", "THE GIRLS ● truly thinking", "https://www.facebook.com/zihling1120/videos/1060928333948162/"], ["雜誌曝光", "Art Quarter vol.6 史上最強工筆藝術3", "http://www.books.com.tw/products/R030051293"], ["個展", "魔女的庭園/台灣台北VVG Thinking [好樣思維]", "http://vvgvvg.blogspot.tw/2014/03/zihling-x-vvg-thinking-2014-0222-sat.html"], ["聯展", "歡迎來到 甜美的暗黑童話世界/台灣台北Wrong Gallery Taipei", "https://www.facebook.com/WrongGalleries/photos/?tab=album&album_id=698165363611229"], ["聯展", "馭風行/台灣台北Wrong Gallery Taipei", "https://www.facebook.com/events/244343939061001/"], ["聯展", "夢の劇場 -Theater of dreams-/日本東京スパンアートギャラリー", "http://www.span-art.co.jp/exhibition/201405theaterofdreams.html"], ["聯展", "Young Art Taipei2014 /スパンアートギャラリー", "http://www.youngarttaipei.com/"]]]];
+  const GROUP = {"個展": "show", "聯展": "show", "雙人展": "show", "聯名合作": "collab", "圖像授權": "collab", "專輯插畫": "visual", "單曲插畫&網站製作": "visual", "形象視覺": "visual", "活動視覺": "visual", "POP-UP SHOP 主視覺": "visual", "POP-UP SHOP": "visual", "商業委託": "visual", "ART BOOK出版": "pub", "獨立出版": "pub", "雜誌曝光": "pub", "廣播訪問": "pub", "Line貼圖": "other", "Line主題": "other", "手機主題": "other", "互動分享": "other"};
+  const TAG = {"個展": ["Solo show", "個展"], "聯展": ["Group show", "グループ展"], "雙人展": ["Duo show", "二人展"], "聯名合作": ["Collaboration", "コラボ"], "圖像授權": ["Licensing", "イラスト提供"], "專輯插畫": ["Album art", "アルバムイラスト"], "單曲插畫&網站製作": ["Single art & web", "シングル・Web"], "形象視覺": ["Key visual", "イメージビジュアル"], "活動視覺": ["Event visual", "イベントビジュアル"], "POP-UP SHOP 主視覺": ["Pop-up visual", "ポップアップ"], "POP-UP SHOP": ["Pop-up shop", "ポップアップ"], "商業委託": ["Commission", "依頼イラスト"], "ART BOOK出版": ["Art book", "画集"], "獨立出版": ["Self-published", "自主制作本"], "雜誌曝光": ["Magazine", "雑誌掲載"], "廣播訪問": ["Radio", "ラジオ出演"], "Line貼圖": ["LINE stickers", "LINEスタンプ"], "Line主題": ["LINE theme", "LINE着せかえ"], "手機主題": ["Phone theme", "スマホテーマ"], "互動分享": ["Picrew", "Picrew"]};
+  const FILTERS = [['all','全部','All','すべて'],['show','展覽','Exhibitions','展示'],['collab','聯名合作','Collaborations','コラボ'],['visual','插畫委託','Illustration work','イラスト制作'],['pub','出版與媒體','Publications & media','出版・メディア'],['other','其他','Other','その他']];
+  const esc = s => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const list = document.querySelector('.career-list'), bar = document.querySelector('.career-filter');
+  let cur = 'all';
+  const lang = () => document.documentElement.lang;
+  const tagName = c => lang()==='en' ? TAG[c][0] : lang()==='ja' ? TAG[c][1] : c;
+  function render() {
+    const li = lang()==='en' ? 2 : lang()==='ja' ? 3 : 1;
+    bar.innerHTML = FILTERS.map(f => `<button type="button" data-f="${f[0]}" aria-pressed="${f[0]===cur}">${esc(f[li])}</button>`).join('');
+    list.innerHTML = CAREER.map(([y, items]) => {
+      const rows = items.filter(([c]) => cur==='all' || GROUP[c]===cur);
+      if (!rows.length) return '';
+      return `<div class="career-year"><h3>${y}</h3><ul>${rows.map(([c,t,u]) => `<li data-g="${GROUP[c]}"><span class="tag">${esc(tagName(c))}</span>${u ? `<a class="career-link" href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>` : `<span>${esc(t)}</span>`}</li>`).join('')}</ul></div>`;
+    }).join('');
+  }
+  bar.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; cur = b.dataset.f; render(); });
+  new MutationObserver(render).observe(document.documentElement, { attributes:true, attributeFilter:['lang'] });
+  render();
+}
+</script>
+<script>
+{
+  // 聯絡表單：透過 Formspree 直接寄到兩個信箱；若連線失敗才改用訪客的郵件程式
+  const FORMSPREE = 'https://formspree.io/f/maeoapyk';
+  const TO = 'zih@zihling.com,zihlinghuang1120@gmail.com';
+  const f = document.querySelector('.contact-form'), err = f.querySelector('.ct-error'), done = f.querySelector('.ct-done'), btn = f.querySelector('.ct-send');
+  f.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (f.elements._gotcha && f.elements._gotcha.value) return;   // 機器人
+    const d = Object.fromEntries(new FormData(f)); let ok = true;
+    for (const el of f.querySelectorAll('input:not([name=_gotcha]), textarea')) {
+      const bad = !el.value.trim() || (el.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()));
+      el.setAttribute('aria-invalid', String(bad)); if (bad) ok = false;
+    }
+    err.hidden = ok; done.hidden = true;
+    if (!ok) return;
+    btn.disabled = true; const label = btn.textContent; btn.textContent = '…';
+    const subject = '[Zihling 網站] ' + d.subject.trim();
+    try {
+      const r = await fetch(FORMSPREE, { method:'POST', headers:{ 'Accept':'application/json', 'Content-Type':'application/json' },
+        body: JSON.stringify({ name:d.name.trim(), email:d.email.trim(), subject:d.subject.trim(), message:d.message.trim(), _subject:subject, _replyto:d.email.trim() }) });
+      if (!r.ok) throw new Error('send');
+      f.reset(); done.dataset.mode = 'sent';
+    } catch (x) {
+      const body = `${d.message.trim()}\n\n——\n${d.name.trim()}\n${d.email.trim()}`;
+      const a = document.createElement('a'); a.href = `mailto:${TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; a.target = '_top';
+      document.body.appendChild(a); a.click(); a.remove(); done.dataset.mode = 'mail';
+    }
+    done.textContent = document.getElementById(done.dataset.mode === 'sent' ? 'ct-sent' : 'ct-mail').textContent;
+    done.hidden = false; btn.disabled = false; btn.textContent = label;
+  });
+}
+</script>
+</body>
+</html>
