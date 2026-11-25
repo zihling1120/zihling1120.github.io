@@ -374,9 +374,33 @@
     .shop-panel { grid-template-columns:1fr; margin-right:0; background:none; padding:0; }
     .shop-grid { gap:8px; grid-template-columns:repeat(3,minmax(0,1fr)); }
   }
+
+  /* ===== 叉子游標（只在有滑鼠的電腦上） ===== */
+  #fork { display:none; }
+  @media (hover:hover) and (pointer:fine) {
+    html.fork-on, html.fork-on * { cursor:none !important; }
+    html.fork-on input, html.fork-on textarea { cursor:text !important; }
+    #fork {
+      display:block; position:fixed; left:0; top:0; z-index:2147483000; pointer-events:none;
+      width:38px; height:56px; opacity:0; transition:opacity .2s;
+      will-change:transform;
+    }
+    #fork.show { opacity:1; }
+    #fork i {
+      position:absolute; inset:0; background:url(images/fork.png) 0 0 / contain no-repeat;
+      transform-origin:0 4px; transition:transform .22s cubic-bezier(.3,1.5,.5,1);
+      /* 細深色描邊＋陰影，淺色背景上也看得清楚 */
+      filter:contrast(1.15) drop-shadow(0 0 .6px rgba(35,31,32,.95)) drop-shadow(0 0 .6px rgba(35,31,32,.6)) drop-shadow(1px 3px 3px rgba(40,28,26,.45));
+    }
+    #fork.hot i { transform:rotate(-14deg) scale(1.12); }
+    #fork.down i { transform:rotate(-14deg) scale(1.02) translate(-3px,-3px); transition-duration:.08s; }
+    #fork.typing { opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce) { #fork i { transition:none; } }
 </style>
 </head>
 <body data-page="about">
+<div id="fork" aria-hidden="true"><i></i></div>
 <div class="page">
   <aside class="side">
     <div class="crest home-link" role="link" tabindex="0" aria-label="首頁" data-i18n-aria="home_label"><img src="images/doll.webp" alt=""><img class="lid half" src="images/doll_half.webp" alt=""><img class="lid shut" src="images/doll_shut.webp" alt=""></div>
@@ -804,6 +828,37 @@
     done.textContent = document.getElementById(done.dataset.mode === 'sent' ? 'ct-sent' : 'ct-mail').textContent;
     done.hidden = false; btn.disabled = false; btn.textContent = label;
   });
+}
+</script>
+<script>
+{
+  // 叉子游標：跟著滑鼠走、帶一點柔軟的延遲；指到可點的地方會歪頭放大，按下時戳一下
+  const mq = matchMedia('(hover:hover) and (pointer:fine)');
+  const fork = document.getElementById('fork');
+  const HOT = 'a, button, [role="button"], [role="link"], label, select, summary, .home-link, .shop-grid img, .lb-btn';
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let x = -100, y = -100, tx = -100, ty = -100, raf = 0;
+  const loop = () => {
+    const k = reduce ? 1 : 0.38;
+    x += (tx - x) * k; y += (ty - y) * k;
+    fork.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    raf = (Math.abs(tx - x) + Math.abs(ty - y) > 0.3) ? requestAnimationFrame(loop) : 0;
+  };
+  const on = () => mq.matches && document.documentElement.classList.add('fork-on');
+  on(); mq.addEventListener('change', e => document.documentElement.classList.toggle('fork-on', e.matches));
+  addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse' || !mq.matches) return;
+    tx = e.clientX; ty = e.clientY - 4;
+    if (!fork.classList.contains('show')) { x = tx; y = ty; fork.classList.add('show'); }
+    const t = e.target;
+    fork.classList.toggle('hot', !!(t.closest && t.closest(HOT)));
+    fork.classList.toggle('typing', !!(t.closest && t.closest('input, textarea')));
+    if (!raf) raf = requestAnimationFrame(loop);
+  }, { passive:true });
+  addEventListener('pointerdown', e => { if (e.pointerType === 'mouse') fork.classList.add('down'); });
+  addEventListener('pointerup', () => fork.classList.remove('down'));
+  document.addEventListener('mouseleave', () => fork.classList.remove('show'));
+  document.addEventListener('mouseenter', () => fork.classList.add('show'));
 }
 </script>
 </body>
