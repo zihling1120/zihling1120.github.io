@@ -65,6 +65,7 @@
   }
   @media (prefers-reduced-motion: reduce) { .crest img.lid { animation:none; } }
   .burger { display:none; }
+  .name-m { display:none; }
   .home-link { cursor:pointer; }
   .home-link:focus-visible { outline:2px solid var(--ink); outline-offset:4px; border-radius:8px; }
   .logo { display:block; width:100%; max-width:300px; height:auto; }
@@ -149,6 +150,18 @@
   .career-year { display:grid; grid-template-columns:72px minmax(0,1fr); gap:20px; padding:16px 0; border-top:1px solid rgba(35,31,32,.18); }
   .career-year:first-child { border-top:0; }
   .career-year[hidden] { display:none; }
+  .career-year.foldable[data-open="false"] { padding:10px 0; }
+  .career-year ul[hidden] { display:none; }
+  .year-toggle { font:inherit; color:inherit; background:none; border:0; padding:0; cursor:pointer; display:flex; flex-direction:column; align-items:flex-start; gap:4px; text-align:left; }
+  .year-toggle::after { content:''; width:8px; height:8px; border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor; transform:rotate(45deg); margin:2px 0 0 3px; transition:transform .25s; opacity:.6; }
+  .year-toggle[aria-expanded="true"]::after { transform:rotate(-135deg); margin-top:6px; }
+  .year-toggle .cnt { font:500 11px/1 "Noto Sans TC",sans-serif; letter-spacing:.04em; opacity:.55; }
+  .year-toggle .cnt::after { content:' 筆'; }
+  html:lang(en) .year-toggle .cnt::after { content:' items'; }
+  html:lang(ja) .year-toggle .cnt::after { content:' 件'; }
+  .year-toggle:hover { opacity:.7; }
+  .year-toggle:focus-visible { outline:2px solid var(--ink); outline-offset:3px; border-radius:4px; }
+  .career-year.foldable[data-open="false"] .year-toggle .cnt { order:2; }
   .career-year h3 { font:600 22px/1.2 "Cormorant Garamond","Times New Roman",serif; letter-spacing:.02em; padding-top:2px; }
   .career-year ul { list-style:none; display:flex; flex-direction:column; gap:9px; }
   .career-year li { display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:baseline; font-size:clamp(13px,1vw,15px); line-height:1.6; }
@@ -162,9 +175,9 @@
   /* ===== 聯絡我頁 ===== */
   body[data-view="contact"] .page { grid-template-columns:minmax(220px,300px) minmax(0,1fr); align-items:start; }
   body[data-view="contact"] .art, body[data-view="contact"] .about { display:none; }
-  .contact { max-width:620px; padding-top:clamp(24px,5vh,60px); padding-bottom:40px; }
+  .contact { justify-self:center; width:100%; max-width:620px; text-align:center; padding-top:clamp(24px,5vh,60px); padding-bottom:40px; }
   .contact-lead { font-size:clamp(13px,1vw,15px); line-height:1.8; margin-bottom:22px; }
-  .contact-form { display:flex; flex-direction:column; gap:16px; }
+  .contact-form { display:flex; flex-direction:column; gap:16px; text-align:left; }
   .contact-form .row2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
   .contact-form label { display:flex; flex-direction:column; gap:6px; font-size:13px; letter-spacing:.04em; }
   .contact-form input, .contact-form textarea {
@@ -173,13 +186,15 @@
   }
   .contact-form input:focus, .contact-form textarea:focus { outline:none; border-color:var(--ink); background:rgba(243,238,236,.8); }
   .contact-form [aria-invalid="true"] { border-color:#a3473f; }
-  .ct-send { align-self:flex-start; font:inherit; font-size:15px; letter-spacing:.1em; color:#f3eeec; background:var(--ink);
+  .ct-send { align-self:center; font:inherit; font-size:15px; letter-spacing:.1em; color:#f3eeec; background:var(--ink);
     border:0; border-radius:999px; padding:11px 34px; min-height:44px; cursor:pointer; transition:opacity .2s, transform .15s; }
   .ct-send:hover { opacity:.85; } .ct-send:active { transform:scale(.97); }
   .ct-send:disabled { opacity:.6; cursor:wait; }
   .ct-send:focus-visible { outline:2px solid var(--ink); outline-offset:3px; }
   .ct-error { color:#a3473f; font-size:13px; }
-  .ct-done { font-size:13px; line-height:1.7; }
+  .ct-done { font-size:13px; line-height:1.7; text-align:center; }
+  .ct-error { text-align:center; }
+  .contact-art { display:block; width:min(50%,220px); height:auto; margin:0 auto 14px; filter:drop-shadow(0 6px 10px rgba(60,40,40,.18)); }
   .contact-direct { margin-top:28px; font-size:13px; line-height:2; }
   .contact-direct a { color:var(--ink); }
   /* ===== 購買作品頁 ===== */
@@ -266,6 +281,23 @@
   }
   .art canvas, .art img { position:absolute; display:block; }
   .art img.frame { inset:0; width:100%; height:100%; pointer-events:none; }
+  /* 女孩眨眼：睜→半閉→閉→半閉→睜，約每 4.5 秒一次，偶爾連眨兩下 */
+  .art img.lid { pointer-events:none; opacity:0; }
+  .art img.lid-half { animation:girl-half 6.5s 1.5s infinite step-end; }
+  .art img.lid-shut { animation:girl-shut 6.5s 1.5s infinite step-end; }
+  @keyframes girl-half {
+    0% { opacity:0; }
+    50% { opacity:1; } 51% { opacity:0; } 52.2% { opacity:1; } 53.2% { opacity:0; }
+    88% { opacity:1; } 88.9% { opacity:0; } 89.9% { opacity:1; } 90.8% { opacity:0; }
+    92.5% { opacity:1; } 93.4% { opacity:0; } 94.4% { opacity:1; } 95.3% { opacity:0; }
+  }
+  @keyframes girl-shut {
+    0% { opacity:0; }
+    51% { opacity:1; } 52.2% { opacity:0; }
+    88.9% { opacity:1; } 89.9% { opacity:0; }
+    93.4% { opacity:1; } 94.4% { opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .art img.lid { animation:none; } }
 
   /* 右側文字 */
   .about h1 {
@@ -286,11 +318,12 @@
   .about p { font-size:clamp(12px,1vw,15px); line-height:1.95; margin-bottom:1.9em; text-align:justify; }
 
   @media (max-width: 1000px) {
-    .page { grid-template-columns:1fr; justify-items:center; padding-top:0; row-gap:clamp(18px,4vw,32px); }
+    .page { grid-template-columns:1fr; justify-items:center; padding-top:calc(var(--head-h, 210px) + clamp(12px,3vw,24px)); row-gap:clamp(18px,4vw,32px); }
     /* 手機版：頂部列（標題＋漢堡選單），選單收合 */
     .side {
-      position:sticky; top:0; z-index:20; justify-self:stretch;
-      margin:0 calc(-1 * var(--pad)); padding:12px var(--pad);
+      /* 固定在頂端、不佔版面：收起草莓時內容不會跟著跳動 */
+      position:fixed; top:0; left:0; right:0; z-index:20;
+      margin:0; padding:12px var(--pad);
       display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
       background:var(--bg); border-bottom:1px solid rgba(35,31,32,.18);
     }
@@ -325,6 +358,9 @@
     .icons { margin-top:14px; }
     .icons { margin-bottom:10px; }
     .art { height:auto; width:min(92vw,560px); }
+    /* 手機版：名字移到主插畫上方 */
+    body[data-view="about"] .name-m { display:block; max-width:80vw; height:auto; margin-bottom:-6px; }
+    .about h1 { display:none; }
     .about p, .shop-info { font-size:15px; }  /* 手機維持 15px */
     .shop-note { font-size:14px; }
     body[data-view="shop"] .page, body[data-view="career"] .page, body[data-view="contact"] .page { grid-template-columns:1fr; }
@@ -358,7 +394,7 @@
       <a href="#" data-i18n="nav_works" data-page="works" hidden>繪畫作品</a>
       <a href="#shop" data-i18n="nav_shop" data-page="shop">購買作品</a>
       <a href="doll/" target="_blank" rel="noopener" data-i18n="nav_doll">紙娃娃小遊戲</a>
-      <a href="#contact" data-i18n="nav_contact" data-page="contact">聯絡我</a>
+      <a href="#contact" data-i18n="nav_contact" data-page="contact">聯絡Zihling</a>
     </nav>
     <div class="icons">
       <a href="https://www.instagram.com/zihlinghuang/" class="sns" target="_blank" rel="noopener" aria-label="Instagram"><img src="images/sns_ig.png" alt=""></a>
@@ -369,11 +405,17 @@
     </div></div>
   </aside>
 
+  <img class="name-m" src="images/name.png" width="266" height="62" alt="Zihling Huang">
   <div class="art" id="art">
     <canvas data-eye="L"></canvas>
     <canvas data-eye="R"></canvas>
     <canvas data-eye="S"></canvas>
+    <canvas data-eye="S2"></canvas>
+    <canvas data-eye="S3"></canvas>
+    <canvas data-eye="S4"></canvas>
     <img class="frame" src="images/frame.webp" alt="Zihling 插畫：草莓與蝴蝶結中的少女" data-i18n-alt="art_alt">
+    <img class="lid lid-half" src="images/blinkHalf.png" alt="" aria-hidden="true" style="left:40.4032%;top:30.6442%;width:14.9194%;height:4.3044%">
+    <img class="lid lid-shut" src="images/blinkShut.png" alt="" aria-hidden="true" style="left:40.2016%;top:30.8153%;width:14.1935%;height:3.5918%">
   </div>
 
   <section class="about" id="about">
@@ -390,7 +432,8 @@
   </section>
 
   <section class="contact" id="contact-view" hidden>
-    <h2 class="career-title" data-i18n="nav_contact">聯絡我</h2>
+    <h2 class="career-title" data-i18n="nav_contact">聯絡Zihling</h2>
+    <img class="contact-art" src="images/bears.webp" alt="" aria-hidden="true">
     <p class="contact-lead" data-i18n="ct_lead">若有合作需求或其他問題，歡迎聯繫我。</p>
     <form class="contact-form" novalidate>
       <div class="row2">
@@ -454,6 +497,9 @@
     L: { wx:1034, wy:1121, ww:130, wh:74,  ix:1051, iy:1110, iw:120, ih:84,  maxX:16, maxY:6,  group:'girl', w:'images/wL.png', i:'images/iL.png' },
     R: { wx:1164, wy:1121, ww:150, wh:74,  ix:1171, iy:1110, iw:137, ih:84,  maxX:16, maxY:6,  group:'girl', w:'images/wR.png', i:'images/iR.png' },
     S: { wx:1951, wy:709,  ww:225, wh:232, ix:2007, iy:722,  iw:141, ih:153, maxX:38, maxY:34, group:'berry', w:'images/wS.png', i:'images/iS.png' },
+    S2:{ wx:2069, wy:1237, ww:193, wh:126, ix:2086, iy:1247, iw:110, ih:106, maxX:34, maxY:10, group:'berry2', w:'images/wS2.png', i:'images/iS2.png' },
+    S3:{ wx:312,  wy:2402, ww:216, wh:218, ix:380,  iy:2425, iw:121, ih:140, maxX:36, maxY:30, group:'berry3', w:'images/wS3.png', i:'images/iS3.png' },
+    S4:{ wx:627,  wy:542,  ww:247, wh:192, ix:696,  iy:552,  iw:153, ih:167, maxX:40, maxY:16, group:'berry4', w:'images/wS4.png', i:'images/iS4.png' },
   };
   const ASSET_SCALE = 0.5;   // 素材是原圖的一半大小
   const EASE = 0.12;         // 眼球跟隨的平滑度（越小越慢越柔）
@@ -482,8 +528,8 @@
   // 沒有滑鼠時（離開視窗或手機沒觸控）偶爾自己東張西望
   // 手機版（觸控螢幕或窄版面）：不跟手指，眼睛自己東看西看；女孩和草莓各看各的
   const mobileMQ = matchMedia('(max-width: 1000px), (hover: none)');
-  let idle = { girl:{x:0,y:0}, berry:{x:0,y:0} };
-  const nextGlance = { girl:0, berry:600 };
+  let idle = { girl:{x:0,y:0}, berry:{x:0,y:0}, berry2:{x:0,y:0}, berry3:{x:0,y:0}, berry4:{x:0,y:0} };
+  const nextGlance = { girl:0, berry:600, berry2:1100, berry3:300, berry4:1500 };
   function idleTargets(now) {
     const mobile = mobileMQ.matches;
     for (const g in idle) {
@@ -544,7 +590,7 @@
   const T = {
     'zh-Hant': {
       title:'Specimen of a Maiden｜Zihling',
-      nav_about:'關於Zihling', nav_career:'創作經歷', nav_works:'繪畫作品', nav_shop:'購買作品', nav_doll:'紙娃娃小遊戲', nav_contact:'聯絡我', menu_label:'選單', home_label:'回首頁', ct_lead:'若有合作需求或其他問題，歡迎聯繫我。', ct_name:'姓名', ct_email:'Email', ct_subject:'主旨', ct_message:'內容', ct_send:'寄出', ct_error:'請填寫所有欄位，並確認 Email 格式正確。', ct_sent:'已送出，謝謝你的來信！我會盡快回覆。', ct_done:'已開啟你的郵件程式，信件內容都填好了，請在郵件程式裡按下「傳送」。', ct_direct:'也可以直接寫信到：',
+      nav_about:'關於Zihling', nav_career:'創作經歷', nav_works:'繪畫作品', nav_shop:'購買作品', nav_doll:'紙娃娃小遊戲', nav_contact:'聯絡Zihling', menu_label:'選單', home_label:'回首頁', ct_lead:'若有合作需求或其他問題，歡迎聯繫我。', ct_name:'姓名', ct_email:'Email', ct_subject:'主旨', ct_message:'內容', ct_send:'寄出', ct_error:'請填寫所有欄位，並確認 Email 格式正確。', ct_sent:'已送出，謝謝你的來信！我會盡快回覆。', ct_done:'已開啟你的郵件程式，信件內容都填好了，請在郵件程式裡按下「傳送」。', ct_direct:'也可以直接寫信到：',
       shop_online:'線上購買', shop_myship:'賣貨便｜台灣地區', shop_myship_desc:'台灣的朋友請點擊上方按鈕進行購買，提供超商取貨付款，快速又方便，還有不定期的運費優惠！',
       shop_pinkoi:'Pinkoi｜海外地區', shop_pinkoi_desc:'提供海外同好購買管道，無論身在何處，都歡迎透過 Pinkoi 支持我的創作。',
       shop_offline:'實體寄售點', shop_place:'駁二藝術特區｜漫畫便當店', shop_addr1:'駁二大義區C7動漫倉庫', shop_addr2:'高雄市鹽埕區大勇路1號', shop_map:'在 Google 地圖查看',
@@ -556,7 +602,7 @@
     },
     en: {
       title:'Specimen of a Maiden｜Zihling',
-      nav_about:'About Zihling', nav_career:'Experience', nav_works:'Artworks', nav_shop:'Shop', nav_doll:'Paper Doll Game', nav_contact:'Contact', menu_label:'Menu', home_label:'Home', ct_lead:'If you would like to work with me or have further questions, you are welcome to get in touch.', ct_name:'Name', ct_email:'Email', ct_subject:'Subject', ct_message:'Message', ct_send:'Send', ct_error:'Please fill in every field and check your email address.', ct_sent:'Sent — thank you for your message! I will get back to you soon.', ct_done:'Your email app has opened with the message filled in. Please press Send there.', ct_direct:'Or email me directly:',
+      nav_about:'About Zihling', nav_career:'Experience', nav_works:'Artworks', nav_shop:'Shop', nav_doll:"Zihling's Doll maker", nav_contact:'Contact Zihling', menu_label:'Menu', home_label:'Home', ct_lead:'If you would like to work with me or have further questions, you are welcome to get in touch.', ct_name:'Name', ct_email:'Email', ct_subject:'Subject', ct_message:'Message', ct_send:'Send', ct_error:'Please fill in every field and check your email address.', ct_sent:'Sent — thank you for your message! I will get back to you soon.', ct_done:'Your email app has opened with the message filled in. Please press Send there.', ct_direct:'Or email me directly:',
       shop_online:'Shop online', shop_myship:'MyShip｜Taiwan', shop_myship_desc:'For friends in Taiwan, tap the link above to order. Pay on pickup at convenience stores — quick and easy, with occasional shipping discounts!',
       shop_pinkoi:'Pinkoi｜International', shop_pinkoi_desc:'For fans outside Taiwan: wherever you are, you are welcome to support my work through Pinkoi.',
       shop_offline:'Consignment shop', shop_place:'Pier-2 Art Center｜Manga Bento Shop', shop_addr1:'C7 Anime Warehouse, Dayi Area, Pier-2', shop_addr2:'No. 1, Dayong Rd., Yancheng Dist., Kaohsiung', shop_map:'View on Google Maps',
@@ -568,7 +614,7 @@
     },
     ja: {
       title:'Specimen of a Maiden｜Zihling',
-      nav_about:'Zihlingについて', nav_career:'創作歴', nav_works:'作品', nav_shop:'作品を購入', nav_doll:'着せ替えゲーム', nav_contact:'お問い合わせ', menu_label:'メニュー', home_label:'ホーム', ct_lead:'お仕事のご依頼やご質問は、お気軽にご連絡ください。', ct_name:'お名前', ct_email:'メールアドレス', ct_subject:'件名', ct_message:'内容', ct_send:'送信', ct_error:'すべての項目を入力し、メールアドレスをご確認ください。', ct_sent:'送信しました。ご連絡ありがとうございます！できるだけ早くお返事します。', ct_done:'メールアプリが開き、内容が入力されています。メールアプリで送信ボタンを押してください。', ct_direct:'直接メールを送ることもできます：',
+      nav_about:'Zihlingについて', nav_career:'創作歴', nav_works:'作品', nav_shop:'作品を購入', nav_doll:'着せ替えゲーム', nav_contact:'Zihlingへのお問い合わせ', menu_label:'メニュー', home_label:'ホーム', ct_lead:'お仕事のご依頼やご質問は、お気軽にご連絡ください。', ct_name:'お名前', ct_email:'メールアドレス', ct_subject:'件名', ct_message:'内容', ct_send:'送信', ct_error:'すべての項目を入力し、メールアドレスをご確認ください。', ct_sent:'送信しました。ご連絡ありがとうございます！できるだけ早くお返事します。', ct_done:'メールアプリが開き、内容が入力されています。メールアプリで送信ボタンを押してください。', ct_direct:'直接メールを送ることもできます：',
       shop_online:'オンラインショップ', shop_myship:'賣貨便｜台湾国内', shop_myship_desc:'台湾にお住まいの方は上のリンクからご購入ください。コンビニ受け取り・代金引換に対応しており、不定期で送料割引もあります！',
       shop_pinkoi:'Pinkoi｜海外のお客様', shop_pinkoi_desc:'海外のファンの方向けの購入窓口です。どこにいても、Pinkoi から私の創作を応援していただけると嬉しいです。',
       shop_offline:'委託販売店舗', shop_place:'駁二芸術特区｜漫画弁当店', shop_addr1:'駁二大義エリア C7 アニメ倉庫', shop_addr2:'高雄市塩埕区大勇路1号', shop_map:'Google マップで見る',
@@ -647,7 +693,24 @@
   document.querySelectorAll('.menu a').forEach(a => a.addEventListener('click', () => setOpen(false)));
   document.addEventListener('click', e => { if (!side.contains(e.target)) setOpen(false); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') setOpen(false); });
-  const onScroll = () => side.classList.toggle('scrolled', scrollY > 40);
+  // 往下捲收起草莓（有緩衝區，避免在臨界點來回切換）
+  const onScroll = () => {
+    const s = side.classList.contains('scrolled');
+    if (!s && scrollY > 80) side.classList.add('scrolled');
+    else if (s && scrollY < 20) side.classList.remove('scrolled');
+  };
+  // 量出頂部列完整高度，讓內容從它下面開始
+  const crest = side.querySelector('.crest');
+  const measure = () => {
+    if (!matchMedia('(max-width: 1000px)').matches) { document.documentElement.style.removeProperty('--head-h'); return; }
+    const wasS = side.classList.contains('scrolled'), wasO = side.classList.contains('open');
+    crest.style.transition = 'none'; side.classList.remove('scrolled', 'open');
+    const hh = side.offsetHeight;
+    side.classList.toggle('scrolled', wasS); side.classList.toggle('open', wasO);
+    crest.offsetHeight; crest.style.transition = '';
+    document.documentElement.style.setProperty('--head-h', hh + 'px');
+  };
+  addEventListener('resize', measure); addEventListener('load', measure); measure();
   addEventListener('scroll', onScroll, { passive:true }); onScroll();
   matchMedia('(min-width: 1001px)').addEventListener('change', e => { if (e.matches) setOpen(false); });
 }
@@ -680,13 +743,14 @@
 <script>
 {
   // 創作經歷：資料來自 Notion Sales Kit（2014–2025）。新增經歷時，在對應年份加一行 ['類別','內容'] 即可
-  const CAREER = [["2025", [["聯名合作", "WINK PHOTO韓式拍貼館圖框設計", "https://www.plurk.com/p/3hfpqkknal"], ["雙人展", "重縫少女 Zihling × 草本菟刻 /台灣 駁二藝術特區", "https://www.instagram.com/p/DLrksuST4P9/"], ["聯名合作", "ViewFinder X Zihling Ribbon Party – 寬版落肩T", "https://www.viewfinder.com.tw/product/zihling-ribbon-party/"], ["聯名合作", "好憶甜點 H&E X Zihling 鐵盒餅乾 dessert Velvet Serenade◆天鵝絨小夜曲", "https://hedessert.waca.tw/product/detail/2189030/zihlinghuang"], ["聯名合作", "Little Rose Planet X Zihling 吸血鬼少女來訪日 Lolita洋裝", "https://www.facebook.com/media/set/?set=a.1017948703684271&type=3"]]], ["2024", [["聯名合作", "Little Rose Planet X Zihling 2024 Seven seconds romance Special limited edition", "https://www.facebook.com/media/set/?set=a.942748024537673&type=3"], ["聯名合作", "愛花製作所xZihling 聯名瑪莉珍鞋", "https://www.instagram.com/p/DBx9DYbzgyW/"], ["聯名合作", "Palipali韓式拍貼館圖框設計", "https://www.plurk.com/p/3g09gikdlj"], ["聯名合作", "More Shot韓式拍貼機圖框設計", "https://www.instagram.com/p/C4x1yzFviIr/"], ["聯名合作", "Zihling x CreASEnse 創感品味 手機殼聯名第三彈", "https://creasense.tw/collections/power-bank-zihling?ref=LOVEZIH"]]], ["2023", [["個展", "GOSULOLI /日本 Gomeisa GALLERY", "https://www.instagram.com/p/CtjG28eyzQt/"], ["雜誌曝光", "ExtrART file.36 ◎FEATURE：白昼夢の劇場／少女の遊戯", "https://athird.cart.fc2.com/ca7/377/p-r-s/"], ["聯名合作", "愛花製作所xZihling 聯名樂福鞋", "https://www.instagram.com/p/CoHUQ1GSjAA/"]]], ["2022", [["個展", "モノドラマ /日本 gallery hydrangea", "https://gallery-hydrangea.shopinfo.jp/posts/38131508/"], ["聯名合作", "ABIS 亞比斯醫用口罩印花聯名", "https://mask.abis-it.com/search?q=zihling"], ["聯展", "2022 OneOffs NFT 國際藝術博覽會 /透視藝術空間", "https://www.facebook.com/zihling1120/posts/pfbid028CgryqCxqF6jrYqZuz9JsfyspG9mxncnxchoJLazHQssSjU9kSdrb3GHBsdLdbSwl"], ["聯名合作", "自己印 紙膠帶印花聯名", "https://taipeiurtape.easy.co/search?q=zihling"], ["個展", "學院女子圖錄 /台北 誠品生活南西店 自己印專櫃", "https://www.facebook.com/zihling1120/posts/pfbid028FXaNLUCopqCJbhsBQt7D5ZFLmVXygMuskxrbiFEeGXKpW8kPtN9KG6SDiqBGgRxl"], ["雙人展", "歎息夜 Sighing Night 草本菟刻& Zihling 雙人展 / 台北衛星", "https://www.facebook.com/events/401280335549030/401280392215691"], ["聯名合作", "yunivers hsieh SYMBIOSIS共生 藝術家聯名 限定手繪石英錶", "https://yunivershsieh.com/products/stray-lamb-symbiosis-art-series-yunivers-hsieh"], ["個展", "獨腳戲/台南白兔美術社", "https://www.facebook.com/zihling1120/posts/pfbid02hS6cdr2zYi8Uph6LjM33XUNjrAjsv5YgzHrETz4ErQbWMJJSDTTUP59i3WZmNVGEl"], ["聯名合作", "Zihling x CreASEnse 創感品味 行動電源聯名", "https://creasense.tw/collections/power-bank-zihling?ref=LOVEZIH"], ["聯展", "Art around the World vol.1 - Beautiful - /日本大阪 ギャラリーIYN", "https://www.gallery-iyn.com/post/beautiful"], ["聯展", "Penker X Pethany+Larsen手繪馬克杯聯展 /台灣台北Pethany+Larsen信義誠品店", "https://www.facebook.com/zihling1120/posts/pfbid0iiJhqz93vVrreVah6QHeTirujATTvByUs8G7fSJntMfigDHSkAnn6zV6H31u6pESl"], ["聯名合作", "Zihling x CreASEnse 創感品味 手機殼聯名第二彈 支援多種型號", "https://c3s.tw/zihling"], ["個展", "夢の中で泣いている /日本大阪 ギャラリーIYN", "https://www.gallery-iyn.com/post/zihling_solo-exhibition"]]], ["2021", [["聯名合作", "Zihling X HUMI 小金魚與山茶花 滑鼠墊聯名", "https://www.humi.com.tw/zh/product/78"], ["聯名合作", "Zihling X HUMI 小熊依存症 滑鼠墊聯名", "https://www.humi.com.tw/zh/product/77"], ["商業委託", "眠璃姫子 presents『 ✝️Fallen Marriage✝️』似顏繪", "https://www.facebook.com/zihling1120/posts/411368880360729"], ["個展", "天使的悄悄話 /台灣台北 誠品生活南西店 自己印專櫃", "https://www.facebook.com/events/2907809372803478"], ["聯展", "書，酒，與音樂－－衛星開幕紀念聯展/台灣台北 衛星", "https://www.facebook.com/events/253718126576416"], ["聯名合作", "Zihling x CreASEnse 創感品味 手機殼聯名 支援多種型號", "https://c3s.tw/zihling"], ["聯名合作", "Little Rose Planet X Zihling 馬戲團迷遊Lolita fashion復刻改款", "https://www.facebook.com/media/set/?vanity=littleroseplanet&set=a.3333518463426472"]]], ["2020", [["POP-UP SHOP", "Miss Summer X 閣樓日 「書櫃裡的白日夢」/香港 Miss Summer the store", "https://www.instagram.com/p/CFtxDlaFVJ0/"], ["形象視覺", "草本菟刻 眠夏 Eva BJD三分娃頭形象視覺插畫", "https://www.instagram.com/p/CE9kkQ3l_An/"], ["聯展", "♫ 臺灣唱片致敬展「愛的蓋台」Vol. 2 ♫/台灣台北Mangasick", "https://www.facebook.com/events/955746941503198/"], ["聯展", "花樣羅曼史-羅莉塔時尚特展/臺灣漫畫基地", "https://www.tcb.tw/zh/activity_exhibition/2"], ["互動分享", "picrew紙娃娃上線", "https://picrew.me/image_maker/403353"]]], ["2019", [["形象視覺", "草本菟刻 夏娃 Eva BJD三分娃頭形象視覺插畫", "https://www.facebook.com/zihling1120/posts/3393123250728647"], ["聯展", "Room Bloom /日本gallery hydrangea", "https://gallery-hydrangea.shopinfo.jp/posts/6948244"], ["圖像授權", "Little Rose Planet X Zihling 淑女貓的收藏室 Lady cat's treasure room", "https://www.facebook.com/pg/littleroseplanet/photos/?tab=album&album_id=1598963606881975"], ["聯展", "Matryoshka Custom Show/台灣台北Wrong Gallery Taipei", "https://www.facebook.com/events/477841516101886/"], ["ART BOOK出版", "Sweet Dream 美夢/台灣台北Mangasick", "https://mangasickxox.waca.store/product/detail/363346"], ["個展", "Goodnight, My Baby/台灣台北Mangasick", "https://www.facebook.com/events/340727663524026/"], ["活動視覺", "霍夫曼的玩具箱2019年11月場主視覺", "http://www.hoffmanntb.com/"]]], ["2018", [["Line貼圖", "Zihling Doll", "https://store.line.me/stickershop/product/4370533"], ["圖像授權", "Little Rose Planet X Zihling COSMOS tighs", "https://www.facebook.com/pg/littleroseplanet/photos/?tab=album&album_id=1598963606881975"], ["雙人展", "BLACK DREAM：Zihling & 理想武器 / 紀物＋Documentary＋", "https://www.facebook.com/events/283233815733863/"], ["獨立出版", "Zihling Doll", "https://www.facebook.com/zihling1120/posts/2143845695656415"], ["聯名合作", "Little Rose Planet X Zihling Seven seconds romance服裝聯名", "https://goo.gl/VcceKN"], ["活動視覺", "霍夫曼的玩具箱2018年11月場主視覺", "http://www.hoffmanntb.com/"], ["單曲插畫&網站製作", "6xt7-Kingdom", "https://www.6xt7.com/"], ["專輯插畫", "IRUMA RIOKA-Gateau Chocolat Catharsis", "http://irumarin.com/"]]], ["2017", [["聯展", "Alice 2017 /六本木ストライプスペース", "http://www.span-art.co.jp/exhibition_other/201707alice.html"], ["聯名合作", "Little Rose Planet X Zihling Curiouser Curiouser and Curiouser服裝聯名", "https://www.facebook.com/pg/LittleRosePlanet/photos/?tab=album&album_id=1288063514638654"], ["個展", "洋娃娃輓歌/台灣台北Mangasick", "https://www.facebook.com/events/315287328881926/"], ["聯名合作", "Little Rose Planet X Zihling Curiouser Journey Lolita fashion服裝聯名", "https://www.facebook.com/LittleRosePlanet"], ["活動視覺", "霍夫曼的玩具箱2017 年2月場主視覺", "http://www.hoffmanntb.com/"]]], ["2016", [["聯名合作", "Zihling x 草本菟刻x瑞子 Mirror Mirror球體關節人形", "https://www.facebook.com/pg/CAMD.2008/photos/?tab=album&album_id=1878344852387334"], ["Line主題", "Girl's Daydream", "https://store.line.me/themeshop/product/f7fd48da-c0d9-4aa1-bc70-80950e4ea2d9"], ["專輯插畫", "Aristophanes貍貓-Humans Become Machines", "https://soundcloud.com/aristophanesmusic"], ["專輯插畫", "Aristophanes貍貓-3001: A Space Disco", "https://soundcloud.com/aristophanesmusic"], ["專輯插畫", "Aristophanes貍貓-Peach Blossom", "https://open.spotify.com/album/1hbw7IJoMMTEOYmUH86XuL"], ["專輯插畫", "Aristophanes貍貓-No Rush To Leave Dreams", "https://open.spotify.com/album/7eSw4Wb1kojdqWfyfa7rai"], ["聯名合作", "Little Rose Planet X Zihling 馬戲團迷遊Lolita fashion服裝聯名", "https://www.facebook.com/LittleRosePlanet"], ["獨立出版", "象牙塔裡的羅曼史", "http://zih-ling.wixsite.com/ivory-tower/book"]]], ["2015", [["廣播訪問", "動漫我要聽", "https://goo.gl/wcbAQS"], ["雜誌曝光", "別冊TH ExtrART file.04〜少女は、心の奥に、なに秘める", "http://athird.cart.fc2.com/ca7/122/p-r-s/"], ["手機主題", "[+]HOME 款式一、款式二", "https://play.google.com/store/apps/details?id=jp.co.a_tm.android.plus_romantic_day_dream"], ["聯名合作", "Zihling x 草本菟刻 Doll Cage球體關節人形", "https://www.facebook.com/pg/capsulesculpt/photos/?tab=album&album_id=662855527184224"], ["個展", "怪物少女學/台灣台北Mangasick", "https://www.facebook.com/events/756765994431881/"], ["聯展", "少女マニエリスム グループ展/東京スパンアートギャラリー", "http://www.span-art.co.jp/exhibition/201506mannerism.html"], ["聯展", "Year of the Sheep Group Show/台灣台北Wrong Gallery Taipei", "https://www.facebook.com/events/947896495230143/"], ["聯展", "第三回ヴァニラ画廊大賞展/日本東京ヴァニラ画廊", "http://www.vanilla-gallery.com/index.html"]]], ["2014", [["獨立出版", "THE GIRLS ● truly thinking", "https://www.facebook.com/zihling1120/videos/1060928333948162/"], ["雜誌曝光", "Art Quarter vol.6 史上最強工筆藝術3", "http://www.books.com.tw/products/R030051293"], ["個展", "魔女的庭園/台灣台北VVG Thinking [好樣思維]", "http://vvgvvg.blogspot.tw/2014/03/zihling-x-vvg-thinking-2014-0222-sat.html"], ["聯展", "歡迎來到 甜美的暗黑童話世界/台灣台北Wrong Gallery Taipei", "https://www.facebook.com/WrongGalleries/photos/?tab=album&album_id=698165363611229"], ["聯展", "馭風行/台灣台北Wrong Gallery Taipei", "https://www.facebook.com/events/244343939061001/"], ["聯展", "夢の劇場 -Theater of dreams-/日本東京スパンアートギャラリー", "http://www.span-art.co.jp/exhibition/201405theaterofdreams.html"], ["聯展", "Young Art Taipei2014 /スパンアートギャラリー", "http://www.youngarttaipei.com/"]]]];
-  const GROUP = {"個展": "show", "聯展": "show", "雙人展": "show", "聯名合作": "collab", "圖像授權": "collab", "專輯插畫": "visual", "單曲插畫&網站製作": "visual", "形象視覺": "visual", "活動視覺": "visual", "POP-UP SHOP 主視覺": "visual", "POP-UP SHOP": "visual", "商業委託": "visual", "ART BOOK出版": "pub", "獨立出版": "pub", "雜誌曝光": "pub", "廣播訪問": "pub", "Line貼圖": "other", "Line主題": "other", "手機主題": "other", "互動分享": "other"};
-  const TAG = {"個展": ["Solo show", "個展"], "聯展": ["Group show", "グループ展"], "雙人展": ["Duo show", "二人展"], "聯名合作": ["Collaboration", "コラボ"], "圖像授權": ["Licensing", "イラスト提供"], "專輯插畫": ["Album art", "アルバムイラスト"], "單曲插畫&網站製作": ["Single art & web", "シングル・Web"], "形象視覺": ["Key visual", "イメージビジュアル"], "活動視覺": ["Event visual", "イベントビジュアル"], "POP-UP SHOP 主視覺": ["Pop-up visual", "ポップアップ"], "POP-UP SHOP": ["Pop-up shop", "ポップアップ"], "商業委託": ["Commission", "依頼イラスト"], "ART BOOK出版": ["Art book", "画集"], "獨立出版": ["Self-published", "自主制作本"], "雜誌曝光": ["Magazine", "雑誌掲載"], "廣播訪問": ["Radio", "ラジオ出演"], "Line貼圖": ["LINE stickers", "LINEスタンプ"], "Line主題": ["LINE theme", "LINE着せかえ"], "手機主題": ["Phone theme", "スマホテーマ"], "互動分享": ["Picrew", "Picrew"]};
+  const CAREER = [["2026", [["形象視覺", "盛月塔羅 形象插畫－金陽占卜師", "https://www.instagram.com/p/DfjY56mkjeT/"], ["形象視覺", "盛月塔羅 形象插畫－月夜引路人", "https://www.instagram.com/p/DflneuIku7x/"], ["展會", "Illustration Taipei 台北國際插畫博覽會", "https://www.facebook.com/zihling1120/posts/pfbid02WDixEWWjzXj1BrgnwRj5CWWiP9xWRzTog4vEZitQd35beCXJ1SPAGJYuih8e1bp7l"]]], ["2025", [["聯名合作", "WINK PHOTO韓式拍貼館圖框設計", "https://www.plurk.com/p/3hfpqkknal"], ["雙人展", "重縫少女 Zihling × 草本菟刻 /台灣 駁二藝術特區", "https://www.instagram.com/p/DLrksuST4P9/"], ["聯名合作", "ViewFinder X Zihling Ribbon Party – 寬版落肩T", "https://www.viewfinder.com.tw/product/zihling-ribbon-party/"], ["聯名合作", "好憶甜點 H&E X Zihling 鐵盒餅乾 dessert Velvet Serenade◆天鵝絨小夜曲", "https://hedessert.waca.tw/product/detail/2189030/zihlinghuang"], ["聯名合作", "Little Rose Planet X Zihling 吸血鬼少女來訪日 Lolita洋裝", "https://www.facebook.com/media/set/?set=a.1017948703684271&type=3"]]], ["2024", [["聯名合作", "Little Rose Planet X Zihling 2024 Seven seconds romance Special limited edition", "https://www.facebook.com/media/set/?set=a.942748024537673&type=3"], ["聯名合作", "愛花製作所xZihling 聯名瑪莉珍鞋", "https://www.instagram.com/p/DBx9DYbzgyW/"], ["聯名合作", "Palipali韓式拍貼館圖框設計", "https://www.plurk.com/p/3g09gikdlj"], ["聯名合作", "More Shot韓式拍貼機圖框設計", "https://www.instagram.com/p/C4x1yzFviIr/"], ["聯名合作", "Zihling x CreASEnse 創感品味 手機殼聯名第三彈", "https://creasense.tw/collections/power-bank-zihling?ref=LOVEZIH"]]], ["2023", [["個展", "GOSULOLI /日本 Gomeisa GALLERY", "https://www.instagram.com/p/CtjG28eyzQt/"], ["雜誌曝光", "ExtrART file.36 ◎FEATURE：白昼夢の劇場／少女の遊戯", "https://athird.cart.fc2.com/ca7/377/p-r-s/"], ["聯名合作", "愛花製作所xZihling 聯名樂福鞋", "https://www.instagram.com/p/CoHUQ1GSjAA/"]]], ["2022", [["個展", "モノドラマ /日本 gallery hydrangea", "https://gallery-hydrangea.shopinfo.jp/posts/38131508/"], ["聯名合作", "ABIS 亞比斯醫用口罩印花聯名", "https://mask.abis-it.com/search?q=zihling"], ["聯展", "2022 OneOffs NFT 國際藝術博覽會 /透視藝術空間", "https://www.facebook.com/zihling1120/posts/pfbid028CgryqCxqF6jrYqZuz9JsfyspG9mxncnxchoJLazHQssSjU9kSdrb3GHBsdLdbSwl"], ["聯名合作", "自己印 紙膠帶印花聯名", "https://taipeiurtape.easy.co/search?q=zihling"], ["個展", "學院女子圖錄 /台北 誠品生活南西店 自己印專櫃", "https://www.facebook.com/zihling1120/posts/pfbid028FXaNLUCopqCJbhsBQt7D5ZFLmVXygMuskxrbiFEeGXKpW8kPtN9KG6SDiqBGgRxl"], ["雙人展", "歎息夜 Sighing Night 草本菟刻& Zihling 雙人展 / 台北衛星", "https://www.facebook.com/events/401280335549030/401280392215691"], ["聯名合作", "yunivers hsieh SYMBIOSIS共生 藝術家聯名 限定手繪石英錶", "https://yunivershsieh.com/products/stray-lamb-symbiosis-art-series-yunivers-hsieh"], ["個展", "獨腳戲/台南白兔美術社", "https://www.facebook.com/zihling1120/posts/pfbid02hS6cdr2zYi8Uph6LjM33XUNjrAjsv5YgzHrETz4ErQbWMJJSDTTUP59i3WZmNVGEl"], ["聯名合作", "Zihling x CreASEnse 創感品味 行動電源聯名", "https://creasense.tw/collections/power-bank-zihling?ref=LOVEZIH"], ["聯展", "Art around the World vol.1 - Beautiful - /日本大阪 ギャラリーIYN", "https://www.gallery-iyn.com/post/beautiful"], ["聯展", "Penker X Pethany+Larsen手繪馬克杯聯展 /台灣台北Pethany+Larsen信義誠品店", "https://www.facebook.com/zihling1120/posts/pfbid0iiJhqz93vVrreVah6QHeTirujATTvByUs8G7fSJntMfigDHSkAnn6zV6H31u6pESl"], ["聯名合作", "Zihling x CreASEnse 創感品味 手機殼聯名第二彈 支援多種型號", "https://c3s.tw/zihling"], ["個展", "夢の中で泣いている /日本大阪 ギャラリーIYN", "https://www.gallery-iyn.com/post/zihling_solo-exhibition"]]], ["2021", [["聯名合作", "Zihling X HUMI 小金魚與山茶花 滑鼠墊聯名", "https://www.humi.com.tw/zh/product/78"], ["聯名合作", "Zihling X HUMI 小熊依存症 滑鼠墊聯名", "https://www.humi.com.tw/zh/product/77"], ["商業委託", "眠璃姫子 presents『 ✝️Fallen Marriage✝️』似顏繪", "https://www.facebook.com/zihling1120/posts/411368880360729"], ["個展", "天使的悄悄話 /台灣台北 誠品生活南西店 自己印專櫃", "https://www.facebook.com/events/2907809372803478"], ["聯展", "書，酒，與音樂－－衛星開幕紀念聯展/台灣台北 衛星", "https://www.facebook.com/events/253718126576416"], ["聯名合作", "Zihling x CreASEnse 創感品味 手機殼聯名 支援多種型號", "https://c3s.tw/zihling"], ["聯名合作", "Little Rose Planet X Zihling 馬戲團迷遊Lolita fashion復刻改款", "https://www.facebook.com/media/set/?vanity=littleroseplanet&set=a.3333518463426472"]]], ["2020", [["POP-UP SHOP", "Miss Summer X 閣樓日 「書櫃裡的白日夢」/香港 Miss Summer the store", "https://www.instagram.com/p/CFtxDlaFVJ0/"], ["形象視覺", "草本菟刻 眠夏 Eva BJD三分娃頭形象視覺插畫", "https://www.instagram.com/p/CE9kkQ3l_An/"], ["聯展", "♫ 臺灣唱片致敬展「愛的蓋台」Vol. 2 ♫/台灣台北Mangasick", "https://www.facebook.com/events/955746941503198/"], ["聯展", "花樣羅曼史-羅莉塔時尚特展/臺灣漫畫基地", "https://www.tcb.tw/zh/activity_exhibition/2"], ["互動分享", "picrew紙娃娃上線", "https://picrew.me/image_maker/403353"]]], ["2019", [["形象視覺", "草本菟刻 夏娃 Eva BJD三分娃頭形象視覺插畫", "https://www.facebook.com/zihling1120/posts/3393123250728647"], ["聯展", "Room Bloom /日本gallery hydrangea", "https://gallery-hydrangea.shopinfo.jp/posts/6948244"], ["圖像授權", "Little Rose Planet X Zihling 淑女貓的收藏室 Lady cat's treasure room", "https://www.facebook.com/pg/littleroseplanet/photos/?tab=album&album_id=1598963606881975"], ["聯展", "Matryoshka Custom Show/台灣台北Wrong Gallery Taipei", "https://www.facebook.com/events/477841516101886/"], ["ART BOOK出版", "Sweet Dream 美夢/台灣台北Mangasick", "https://mangasickxox.waca.store/product/detail/363346"], ["個展", "Goodnight, My Baby/台灣台北Mangasick", "https://www.facebook.com/events/340727663524026/"], ["活動視覺", "霍夫曼的玩具箱2019年11月場主視覺", "http://www.hoffmanntb.com/"]]], ["2018", [["Line貼圖", "Zihling Doll", "https://store.line.me/stickershop/product/4370533"], ["圖像授權", "Little Rose Planet X Zihling COSMOS tighs", "https://www.facebook.com/pg/littleroseplanet/photos/?tab=album&album_id=1598963606881975"], ["雙人展", "BLACK DREAM：Zihling & 理想武器 / 紀物＋Documentary＋", "https://www.facebook.com/events/283233815733863/"], ["獨立出版", "Zihling Doll", "https://www.facebook.com/zihling1120/posts/2143845695656415"], ["聯名合作", "Little Rose Planet X Zihling Seven seconds romance服裝聯名", "https://goo.gl/VcceKN"], ["活動視覺", "霍夫曼的玩具箱2018年11月場主視覺", "http://www.hoffmanntb.com/"], ["單曲插畫&網站製作", "6xt7-Kingdom", "https://www.6xt7.com/"], ["專輯插畫", "IRUMA RIOKA-Gateau Chocolat Catharsis", "http://irumarin.com/"]]], ["2017", [["聯展", "Alice 2017 /六本木ストライプスペース", "http://www.span-art.co.jp/exhibition_other/201707alice.html"], ["聯名合作", "Little Rose Planet X Zihling Curiouser Curiouser and Curiouser服裝聯名", "https://www.facebook.com/pg/LittleRosePlanet/photos/?tab=album&album_id=1288063514638654"], ["個展", "洋娃娃輓歌/台灣台北Mangasick", "https://www.facebook.com/events/315287328881926/"], ["聯名合作", "Little Rose Planet X Zihling Curiouser Journey Lolita fashion服裝聯名", "https://www.facebook.com/LittleRosePlanet"], ["活動視覺", "霍夫曼的玩具箱2017 年2月場主視覺", "http://www.hoffmanntb.com/"]]], ["2016", [["聯名合作", "Zihling x 草本菟刻x瑞子 Mirror Mirror球體關節人形", "https://www.facebook.com/pg/CAMD.2008/photos/?tab=album&album_id=1878344852387334"], ["Line主題", "Girl's Daydream", "https://store.line.me/themeshop/product/f7fd48da-c0d9-4aa1-bc70-80950e4ea2d9"], ["專輯插畫", "Aristophanes貍貓-Humans Become Machines", "https://soundcloud.com/aristophanesmusic"], ["專輯插畫", "Aristophanes貍貓-3001: A Space Disco", "https://soundcloud.com/aristophanesmusic"], ["專輯插畫", "Aristophanes貍貓-Peach Blossom", "https://open.spotify.com/album/1hbw7IJoMMTEOYmUH86XuL"], ["專輯插畫", "Aristophanes貍貓-No Rush To Leave Dreams", "https://open.spotify.com/album/7eSw4Wb1kojdqWfyfa7rai"], ["聯名合作", "Little Rose Planet X Zihling 馬戲團迷遊Lolita fashion服裝聯名", "https://www.facebook.com/LittleRosePlanet"], ["獨立出版", "象牙塔裡的羅曼史", "http://zih-ling.wixsite.com/ivory-tower/book"]]], ["2015", [["廣播訪問", "動漫我要聽", "https://goo.gl/wcbAQS"], ["雜誌曝光", "別冊TH ExtrART file.04〜少女は、心の奥に、なに秘める", "http://athird.cart.fc2.com/ca7/122/p-r-s/"], ["手機主題", "[+]HOME 款式一、款式二", "https://play.google.com/store/apps/details?id=jp.co.a_tm.android.plus_romantic_day_dream"], ["聯名合作", "Zihling x 草本菟刻 Doll Cage球體關節人形", "https://www.facebook.com/pg/capsulesculpt/photos/?tab=album&album_id=662855527184224"], ["個展", "怪物少女學/台灣台北Mangasick", "https://www.facebook.com/events/756765994431881/"], ["聯展", "少女マニエリスム グループ展/東京スパンアートギャラリー", "http://www.span-art.co.jp/exhibition/201506mannerism.html"], ["聯展", "Year of the Sheep Group Show/台灣台北Wrong Gallery Taipei", "https://www.facebook.com/events/947896495230143/"], ["聯展", "第三回ヴァニラ画廊大賞展/日本東京ヴァニラ画廊", "http://www.vanilla-gallery.com/index.html"]]], ["2014", [["獨立出版", "THE GIRLS ● truly thinking", "https://www.facebook.com/zihling1120/videos/1060928333948162/"], ["雜誌曝光", "Art Quarter vol.6 史上最強工筆藝術3", "http://www.books.com.tw/products/R030051293"], ["個展", "魔女的庭園/台灣台北VVG Thinking [好樣思維]", "http://vvgvvg.blogspot.tw/2014/03/zihling-x-vvg-thinking-2014-0222-sat.html"], ["聯展", "歡迎來到 甜美的暗黑童話世界/台灣台北Wrong Gallery Taipei", "https://www.facebook.com/WrongGalleries/photos/?tab=album&album_id=698165363611229"], ["聯展", "馭風行/台灣台北Wrong Gallery Taipei", "https://www.facebook.com/events/244343939061001/"], ["聯展", "夢の劇場 -Theater of dreams-/日本東京スパンアートギャラリー", "http://www.span-art.co.jp/exhibition/201405theaterofdreams.html"], ["聯展", "Young Art Taipei2014 /スパンアートギャラリー", "http://www.youngarttaipei.com/"]]]];
+  const GROUP = {"個展": "show", "聯展": "show", "展會": "show", "雙人展": "show", "聯名合作": "collab", "圖像授權": "collab", "專輯插畫": "visual", "單曲插畫&網站製作": "visual", "形象視覺": "visual", "活動視覺": "visual", "POP-UP SHOP 主視覺": "visual", "POP-UP SHOP": "visual", "商業委託": "visual", "ART BOOK出版": "pub", "獨立出版": "pub", "雜誌曝光": "pub", "廣播訪問": "pub", "Line貼圖": "other", "Line主題": "other", "手機主題": "other", "互動分享": "other"};
+  const TAG = {"個展": ["Solo show", "個展"], "聯展": ["Group show", "グループ展"], "展會": ["Art fair", "出展"], "雙人展": ["Duo show", "二人展"], "聯名合作": ["Collaboration", "コラボ"], "圖像授權": ["Licensing", "イラスト提供"], "專輯插畫": ["Album art", "アルバムイラスト"], "單曲插畫&網站製作": ["Single art & web", "シングル・Web"], "形象視覺": ["Key visual", "イメージビジュアル"], "活動視覺": ["Event visual", "イベントビジュアル"], "POP-UP SHOP 主視覺": ["Pop-up visual", "ポップアップ"], "POP-UP SHOP": ["Pop-up shop", "ポップアップ"], "商業委託": ["Commission", "依頼イラスト"], "ART BOOK出版": ["Art book", "画集"], "獨立出版": ["Self-published", "自主制作本"], "雜誌曝光": ["Magazine", "雑誌掲載"], "廣播訪問": ["Radio", "ラジオ出演"], "Line貼圖": ["LINE stickers", "LINEスタンプ"], "Line主題": ["LINE theme", "LINE着せかえ"], "手機主題": ["Phone theme", "スマホテーマ"], "互動分享": ["Picrew", "Picrew"]};
   const FILTERS = [['all','全部','All','すべて'],['show','展覽','Exhibitions','展示'],['collab','聯名合作','Collaborations','コラボ'],['visual','插畫委託','Illustration work','イラスト制作'],['pub','出版與媒體','Publications & media','出版・メディア'],['other','其他','Other','その他']];
   const esc = s => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const list = document.querySelector('.career-list'), bar = document.querySelector('.career-filter');
   let cur = 'all';
+  const OPEN = new Set();   // 2022 以前的年份預設收合，記住使用者展開了哪些年
   const lang = () => document.documentElement.lang;
   const tagName = c => lang()==='en' ? TAG[c][0] : lang()==='ja' ? TAG[c][1] : c;
   function render() {
@@ -695,9 +759,15 @@
     list.innerHTML = CAREER.map(([y, items]) => {
       const rows = items.filter(([c]) => cur==='all' || GROUP[c]===cur);
       if (!rows.length) return '';
-      return `<div class="career-year"><h3>${y}</h3><ul>${rows.map(([c,t,u]) => `<li data-g="${GROUP[c]}"><span class="tag">${esc(tagName(c))}</span>${u ? `<a class="career-link" href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>` : `<span>${esc(t)}</span>`}</li>`).join('')}</ul></div>`;
+      const fold = +y < 2022, open = !fold || OPEN.has(y);
+      return `<div class="career-year${fold ? ' foldable' : ''}"${fold ? ` data-open="${open}"` : ''}>${fold ? `<h3><button type="button" class="year-toggle" data-y="${y}" aria-expanded="${open}">${y}<span class="cnt">${rows.length}</span></button></h3>` : `<h3>${y}</h3>`}<ul${fold && !open ? ' hidden' : ''}>${rows.map(([c,t,u]) => `<li data-g="${GROUP[c]}"><span class="tag">${esc(tagName(c))}</span>${u ? `<a class="career-link" href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>` : `<span>${esc(t)}</span>`}</li>`).join('')}</ul></div>`;
     }).join('');
   }
+  list.addEventListener('click', e => {
+    const b = e.target.closest('.year-toggle'); if (!b) return;
+    const y = b.dataset.y; OPEN.has(y) ? OPEN.delete(y) : OPEN.add(y); render();
+    const nb = list.querySelector(`.year-toggle[data-y="${y}"]`); if (nb) nb.focus();
+  });
   bar.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; cur = b.dataset.f; render(); });
   new MutationObserver(render).observe(document.documentElement, { attributes:true, attributeFilter:['lang'] });
   render();
