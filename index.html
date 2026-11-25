@@ -199,8 +199,12 @@
   .contact-direct a { color:var(--ink); }
   /* ===== 購買作品頁 ===== */
   body[data-view="shop"] .page { grid-template-columns:minmax(220px,300px) auto; }
+  /* 各分頁沿用首頁的欄寬，左側欄位在每一頁都停在同一個位置 */
+  :root { --artw: calc(min(100vh - 60px, 1300px) * 2480 / 3508); }
+  body:not([data-view="about"]) .page { grid-template-columns:minmax(220px,300px) var(--artw) minmax(300px,560px); }
+  body:not([data-view="about"]) .page > section:not([hidden]) { grid-column:2 / 4; }
   @media (min-width:1001px) {
-    body[data-view="shop"] .page { align-items:start; column-gap:clamp(24px,2.6vw,40px); }  /* 螢幕夠大時剛好一頁不需捲動，太小時才可捲動 */
+    body[data-view="shop"] .page { align-items:start; }  /* 螢幕夠大時剛好一頁不需捲動，太小時才可捲動 */
   }
   body[data-view="shop"] .art, body[data-view="shop"] .about { display:none; }
   .shop { align-self:stretch; padding-top:clamp(24px,5vh,60px); }
@@ -225,12 +229,12 @@
   @media (prefers-reduced-motion: reduce) { .berry img.lid { animation:none; } }
   .berry.shop-berry { width:min(100%,220px); margin:4px 0 0 0; }
   .shop-panel {
-    display:grid; grid-template-columns:auto minmax(220px,290px); gap:clamp(20px,2vw,30px);
+    display:grid; grid-template-columns:minmax(calc(var(--tile) * 3 + 36px),1fr) minmax(220px,290px); gap:clamp(20px,2vw,30px);
     padding:clamp(8px,1.5vw,24px) 0; align-items:start;
   }
   /* 照片固定 205px，不隨螢幕縮放 */
   .shop { --tile:205px; }
-  .shop-grid { list-style:none; display:grid; grid-template-columns:repeat(3,var(--tile)); gap:18px; }
+  .shop-grid { list-style:none; display:grid; grid-template-columns:repeat(auto-fill,var(--tile)); gap:18px; }  /* 螢幕越寬一排放越多張，照片大小不變 */
   .shop-grid li { aspect-ratio:1; overflow:hidden; border-radius:14px; background:#b9aca9; box-shadow:0 2px 6px rgba(40,28,26,.18); }
   .shop-grid img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease; }
   .shop-grid li:hover img { transform:scale(1.05); }
@@ -358,12 +362,13 @@
     .icons { margin-top:14px; }
     .icons { margin-bottom:10px; }
     .art { height:auto; width:min(92vw,560px); }
-    /* 手機版：名字移到主插畫上方 */
-    body[data-view="about"] .name-m { display:block; max-width:80vw; height:auto; margin-bottom:-6px; }
+    /* 手機版：名字放在主插畫下方 */
+    body[data-view="about"] .name-m { display:block; max-width:80vw; height:auto; margin:14px auto 4px; }
     .about h1 { display:none; }
     .about p, .shop-info { font-size:15px; }  /* 手機維持 15px */
     .shop-note { font-size:14px; }
     body[data-view="shop"] .page, body[data-view="career"] .page, body[data-view="contact"] .page { grid-template-columns:1fr; }
+    body:not([data-view="about"]) .page > section:not([hidden]) { grid-column:auto; }
     .contact { justify-self:stretch; padding-top:0; }
     .contact-form .row2 { grid-template-columns:1fr; }
     .career { justify-self:stretch; padding-top:0; }
@@ -429,7 +434,6 @@
     </div></div>
   </aside>
 
-  <img class="name-m" src="images/name.png" width="266" height="62" alt="Zihling Huang">
   <div class="art" id="art">
     <canvas data-eye="L"></canvas>
     <canvas data-eye="R"></canvas>
@@ -442,6 +446,7 @@
     <img class="lid lid-shut" src="images/blinkShut.png" alt="" aria-hidden="true" style="left:40.2016%;top:30.8153%;width:14.1935%;height:3.5918%">
   </div>
 
+  <img class="name-m" src="images/name.png" width="266" height="62" alt="Zihling Huang">
   <section class="about" id="about">
     <h1><img class="name" src="images/name.png" width="266" height="62" alt="Zihling Huang"></h1>
     <p data-i18n="p1">Zihling（子玲）是出生於台灣桃園的創作者。創作受到陰柔意象吸引與啟發，進而以甜膩裡帶點詭異的圖像氛圍，建構理想的少女世界，而少女就是猶如洋娃娃一般的怪物，不斷的在人與非人之間遊走。</p>
@@ -487,6 +492,9 @@
         <li><img src="images/shop/s7.webp" data-full="images/shop/b7.webp" tabindex="0" role="button" alt="熊熊貼紙" loading="lazy"></li>
         <li><img src="images/shop/s8.webp" data-full="images/shop/b8.webp" tabindex="0" role="button" alt="手帳本" loading="lazy"></li>
         <li><img src="images/shop/s9.webp" data-full="images/shop/b9.webp" tabindex="0" role="button" alt="蕾絲襪" loading="lazy"></li>
+        <li><img src="images/shop/s10.webp" data-full="images/shop/b10.webp" tabindex="0" role="button" alt="少女插畫卡片" loading="lazy"></li>
+        <li><img src="images/shop/s11.webp" data-full="images/shop/b11.webp" tabindex="0" role="button" alt="畫冊 Sweet Dream" loading="lazy"></li>
+        <li><img src="images/shop/s12.webp" data-full="images/shop/b12.webp" tabindex="0" role="button" alt="白兔壓克力立牌" loading="lazy"></li>
         </ul>
         <p class="shop-note" data-i18n="shop_note">商品庫存可能隨時變動，實際供貨情況請以賣場現貨為準，還請見諒。</p>
       </div>
